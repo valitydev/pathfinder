@@ -2,7 +2,7 @@ defmodule NewWay.Repo.Migrations.Schema do
   use Ecto.Migration
 
   def up do
-    execute "CREATE SCHEMA nw"
+    execute "CREATE SCHEMA IF NOT EXISTS nw"
   end
 
   def down do

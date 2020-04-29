@@ -2,6 +2,9 @@ import Config
 
 # Development compile-time app env
 
+config :pathfinder,
+  read_only: :false
+
 config :pathfinder, Woody.Server,
   ip: "0.0.0.0",
   port: 8022
