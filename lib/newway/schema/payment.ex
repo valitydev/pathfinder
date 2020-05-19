@@ -1,6 +1,6 @@
 defmodule NewWay.Schema.Payment do
   use Ecto.Schema
-  use NewWay.Schema, search_field: :payment_id
+  use NewWay.Schema, search_field: :invoice_id # Payments do not have global id's
   require NewWay.Macro.EnumType, as: EnumType
 
   EnumType.def_enum(PaymentStatus, [

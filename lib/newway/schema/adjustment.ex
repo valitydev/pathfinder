@@ -1,6 +1,6 @@
 defmodule NewWay.Schema.Adjustment do
   use Ecto.Schema
-  use NewWay.Schema, search_field: :adjustment_id
+  use NewWay.Schema, search_field: :invoice_id # Adjustments do not have global id's
   require NewWay.Macro.EnumType, as: EnumType
 
   EnumType.def_enum(AdjustmentStatus, [

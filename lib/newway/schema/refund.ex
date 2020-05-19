@@ -1,6 +1,6 @@
 defmodule NewWay.Schema.Refund do
   use Ecto.Schema
-  use NewWay.Schema, search_field: :refund_id
+  use NewWay.Schema, search_field: :invoice_id # Refunds do not have global id's
   require NewWay.Macro.EnumType, as: EnumType
 
   EnumType.def_enum(RefundStatus, [

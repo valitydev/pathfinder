@@ -22,6 +22,7 @@ defmodule NewWay.Schema do
         require Ecto.Query
         __MODULE__
         |> Ecto.Query.where([a], a.unquote(opts[:search_field]) in ^ids)
+        |> Ecto.Query.limit(unquote(Keyword.get(opts, :limit, 10)))
         |> NewWay.Repo.all()
       end
     end

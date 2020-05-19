@@ -50,21 +50,22 @@ defmodule Pathfinder.Handler.Lookup do
 
   @spec lookup_schema([Pathfinder.lookup_id], Pathfinder.lookup_namespace) ::
     [struct]
-  defp lookup_schema(ids, :adjustments),  do: NewWay.Schema.Adjustment.search(ids)
   defp lookup_schema(ids, :destinations), do: NewWay.Schema.Destination.search(ids)
   defp lookup_schema(ids, :invoices),     do: NewWay.Schema.Invoice.search(ids)
-  defp lookup_schema(ids, :payments),     do: NewWay.Schema.Payment.search(ids)
   defp lookup_schema(ids, :payouts),      do: NewWay.Schema.Payout.search(ids)
-  defp lookup_schema(ids, :refunds),      do: NewWay.Schema.Refund.search(ids)
   defp lookup_schema(ids, :wallets),      do: NewWay.Schema.Wallet.search(ids)
   defp lookup_schema(ids, :withdrawals),  do: NewWay.Schema.Withdrawal.search(ids)
+  # Ignore namespaces without global id's for now
+  defp lookup_schema(_ids, :adjustments),  do: []
+  defp lookup_schema(_ids, :refunds),      do: []
+  defp lookup_schema(_ids, :payments),     do: []
 
   @spec get_namespaces([Pathfinder.lookup_namespace] | :undefined) ::
     [Pathfinder.lookup_namespace]
   defp get_namespaces(list) when is_list(list),
     do: list
   defp get_namespaces(:undefined),
-    do: [:adjustments, :destinations, :invoices, :payments, :payouts, :refunds, :wallets, :withdrawals]
+    do: [:destinations, :invoices, :payouts, :wallets, :withdrawals]
 
   @spec to_thrift(Pathfinder.lookup_namespace, [struct]) ::
     result_data_thrift
