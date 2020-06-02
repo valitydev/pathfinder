@@ -51,7 +51,7 @@ defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Destination do
   require Pathfinder.Thrift.Proto, as: Proto
 
   @type destination_thrift :: :pathfinder_proto_lookup_thrift."Destination"()
-  Proto.import_record(:pf_Destination)
+  Proto.import_records([:pf_Destination])
 
   @spec encode(%NewWay.Schema.Destination{}) :: destination_thrift
   def encode(destination) do

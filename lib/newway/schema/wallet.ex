@@ -26,7 +26,7 @@ defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Wallet do
   require Pathfinder.Thrift.Proto, as: Proto
 
   @type wallet_thrift :: :pathfinder_proto_lookup_thrift."Wallet"()
-  Proto.import_record(:pf_Wallet)
+  Proto.import_records([:pf_Wallet])
 
   @spec encode(%NewWay.Schema.Wallet{}) :: wallet_thrift
   def encode(wallet) do

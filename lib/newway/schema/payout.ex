@@ -102,7 +102,7 @@ defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Payout do
   require Pathfinder.Thrift.Proto, as: Proto
 
   @type payout_thrift :: :pathfinder_proto_lookup_thrift."Payout"()
-  Proto.import_record(:pf_Payout)
+  Proto.import_records([:pf_Payout])
 
   @spec encode(%NewWay.Schema.Payout{}) :: payout_thrift
   def encode(payout) do

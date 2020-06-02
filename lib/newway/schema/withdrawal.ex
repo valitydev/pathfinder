@@ -45,7 +45,7 @@ defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Withdrawal do
   require Pathfinder.Thrift.Proto, as: Proto
 
   @type withdrawal_thrift :: :pathfinder_proto_lookup_thrift."Withdrawal"()
-  Proto.import_record(:pf_Withdrawal)
+  Proto.import_records([:pf_Withdrawal])
 
   @spec encode(%NewWay.Schema.Withdrawal{}) :: withdrawal_thrift
   def encode(withdrawal) do

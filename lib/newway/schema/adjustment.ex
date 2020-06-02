@@ -40,7 +40,7 @@ defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Adjustment do
   require Pathfinder.Thrift.Proto, as: Proto
 
   @type adjustment_thrift :: :pathfinder_proto_lookup_thrift."Adjustment"()
-  Proto.import_record(:pf_Adjustment)
+  Proto.import_records([:pf_Adjustment])
 
   @spec encode(%NewWay.Schema.Adjustment{}) :: adjustment_thrift
   def encode(adjustment) do

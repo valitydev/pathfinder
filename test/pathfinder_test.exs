@@ -3,16 +3,24 @@ defmodule PathfinderTest do
 
   alias Woody.Client
   require Pathfinder.Thrift.Proto, as: Proto
-  Proto.import_record(:pf_LookupRequest)
-  Proto.import_record(:pf_LookupResult)
-  Proto.import_record(:pf_Adjustment)
-  Proto.import_record(:pf_Destination)
-  Proto.import_record(:pf_Invoice)
-  Proto.import_record(:pf_Payment)
-  Proto.import_record(:pf_Payout)
-  Proto.import_record(:pf_Refund)
-  Proto.import_record(:pf_Wallet)
-  Proto.import_record(:pf_Withdrawal)
+  Proto.import_records([
+    :pf_LookupRequest,
+    :pf_LookupResult,
+
+    :pf_Destination,
+    :pf_Identity,
+    :pf_Invoice,
+    :pf_Party,
+    :pf_Payout,
+    :pf_Shop,
+    :pf_Wallet,
+    :pf_Withdrawal,
+
+    :pf_DestinationNamespace,
+    :pf_PayoutNamespace,
+    :pf_WalletNamespace,
+    :pf_WithdrawalNamespace
+  ])
 
   setup do
     client = Client.new("http://localhost:8022")
@@ -45,8 +53,11 @@ defmodule PathfinderTest do
 
     {:ok, pf_LookupResult(data: [
       {:destinations, [pf_Destination(id: 3)]},
+      {:identities,   [pf_Identity(id: 3)]},
       {:invoices,     [pf_Invoice(id: 3)]},
+      {:parties,      [pf_Party(id: 3)]},
       {:payouts,      [pf_Payout(id: 3)]},
+      {:shops,        [pf_Shop(id: 3)]},
       {:wallets,      [pf_Wallet(id: 3)]},
       {:withdrawals,  [pf_Withdrawal(id: 3)]}
     ])} = Client.lookup(lookup_request, ctx[:client])
@@ -64,7 +75,11 @@ defmodule PathfinderTest do
         "test_wallet_id_2",
         "test_withdrawal_id_2"
       ],
-      namespaces: [:destinations, :payouts, :wallets]
+      namespaces: [
+        {:destinations, pf_DestinationNamespace()},
+        {:payouts, pf_PayoutNamespace()},
+        {:wallets, pf_WalletNamespace()}
+      ]
     )
 
     {:ok, pf_LookupResult(data: [
@@ -77,7 +92,11 @@ defmodule PathfinderTest do
   test "lookup ambiguous id namespace limit", ctx do
     lookup_request = pf_LookupRequest(
       ids: ["ambiguous_id"],
-      namespaces: [:payouts, :withdrawals, :wallets]
+      namespaces: [
+        {:payouts, pf_PayoutNamespace()},
+        {:withdrawals, pf_WithdrawalNamespace()},
+        {:wallets, pf_WalletNamespace()}
+      ]
     )
 
     {:ok, pf_LookupResult(data: [
