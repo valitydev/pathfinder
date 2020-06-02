@@ -4,25 +4,12 @@ defmodule Pathfinder.Handler.Lookup do
 
   Proto.import_records([
     :pf_LookupRequest,
-    :pf_LookupResult,
-
-    :pf_AdjustmentNamespace,
-    :pf_DestinationNamespace,
-    :pf_IdentityNamespace,
-    :pf_InvoiceNamespace,
-    :pf_PartyNamespace,
-    :pf_PaymentNamespace,
-    :pf_PayoutNamespace,
-    :pf_RefundNamespace,
-    :pf_ShopNamespace,
-    :pf_WalletNamespace,
-    :pf_WithdrawalNamespace
+    :pf_LookupResult
   ])
 
   @type lookup_request_thrift :: :pathfinder_proto_lookup_thrift."LookupRequest"()
   @type lookup_result_thrift :: :pathfinder_proto_lookup_thrift."LookupResult"()
   @type result_data_thrift :: :pathfinder_proto_lookup_thrift."ResultData"()
-  @type lookup_namespace_thrift :: :pathfinder_proto_lookup_thrift."LookupNamespace"()
 
   @behaviour :woody_server_thrift_handler
 
@@ -79,10 +66,10 @@ defmodule Pathfinder.Handler.Lookup do
   defp lookup_schema(_ids, :refunds),      do: []
   defp lookup_schema(_ids, :payments),     do: []
 
-  @spec get_namespaces([lookup_namespace_thrift] | :undefined) ::
+  @spec get_namespaces([Pathfinder.lookup_namespace] | :undefined) ::
     [Pathfinder.lookup_namespace]
-  defp get_namespaces(thrift_namespaces) when is_list(thrift_namespaces),
-    do: for {namespace, _} <- thrift_namespaces, do: namespace
+  defp get_namespaces(namespaces) when is_list(namespaces),
+    do: namespaces
   defp get_namespaces(:undefined),
     do: [:destinations, :identities, :invoices, :parties, :payouts, :shops, :wallets, :withdrawals]
 

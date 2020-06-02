@@ -14,12 +14,7 @@ defmodule PathfinderTest do
     :pf_Payout,
     :pf_Shop,
     :pf_Wallet,
-    :pf_Withdrawal,
-
-    :pf_DestinationNamespace,
-    :pf_PayoutNamespace,
-    :pf_WalletNamespace,
-    :pf_WithdrawalNamespace
+    :pf_Withdrawal
   ])
 
   setup do
@@ -76,9 +71,9 @@ defmodule PathfinderTest do
         "test_withdrawal_id_2"
       ],
       namespaces: [
-        {:destinations, pf_DestinationNamespace()},
-        {:payouts, pf_PayoutNamespace()},
-        {:wallets, pf_WalletNamespace()}
+        :destinations,
+        :payouts,
+        :wallets
       ]
     )
 
@@ -93,9 +88,9 @@ defmodule PathfinderTest do
     lookup_request = pf_LookupRequest(
       ids: ["ambiguous_id"],
       namespaces: [
-        {:payouts, pf_PayoutNamespace()},
-        {:withdrawals, pf_WithdrawalNamespace()},
-        {:wallets, pf_WalletNamespace()}
+        :payouts,
+        :withdrawals,
+        :wallets
       ]
     )
 
