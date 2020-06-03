@@ -17,7 +17,6 @@ defmodule NewWay.Repo.Migrations.Parties do
     execute """
       CREATE TABLE nw.party (
         id bigint NOT NULL,
-        event_id bigint NOT NULL,
         event_created_at timestamp without time zone NOT NULL,
         party_id character varying NOT NULL,
         contact_info_email character varying NOT NULL,
@@ -35,12 +34,13 @@ defmodule NewWay.Repo.Migrations.Parties do
         party_meta_set_ns character varying,
         party_meta_set_data_json character varying,
         wtime timestamp without time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
-        current boolean DEFAULT true NOT NULL
+        current boolean DEFAULT true NOT NULL,
+        sequence_id integer,
+        change_id integer
       );
     """
     execute """
       INSERT INTO nw.party VALUES (
-        1,
         1,
         '2004-10-19 10:23:54',
         'test_party_id_1',
@@ -59,12 +59,13 @@ defmodule NewWay.Repo.Migrations.Parties do
         NULL,
         NULL,
         '2004-10-19 10:23:54',
-        true
+        true,
+        1,
+        1
       )
     """
     execute """
       INSERT INTO nw.party VALUES (
-        2,
         2,
         '2004-10-19 10:23:54',
         'test_party_id_2',
@@ -83,12 +84,13 @@ defmodule NewWay.Repo.Migrations.Parties do
         NULL,
         NULL,
         '2004-10-19 10:23:54',
-        true
+        true,
+        2,
+        2
       )
     """
     execute """
       INSERT INTO nw.party VALUES (
-        3,
         3,
         '2004-10-19 10:23:54',
         'ambiguous_id',
@@ -107,7 +109,9 @@ defmodule NewWay.Repo.Migrations.Parties do
         NULL,
         NULL,
         '2004-10-19 10:23:54',
-        true
+        true,
+        3,
+        3
       )
     """
   end

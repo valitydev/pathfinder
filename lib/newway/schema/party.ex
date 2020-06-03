@@ -16,7 +16,6 @@ defmodule NewWay.Schema.Party do
 
   @schema_prefix "nw"
   schema "party" do
-    field(:event_id,                   :integer)
     field(:event_created_at,           :utc_datetime)
     field(:party_id,                   :string)
     field(:contact_info_email,         :string)
@@ -35,6 +34,8 @@ defmodule NewWay.Schema.Party do
     field(:party_meta_set_data_json,   :string)
     field(:wtime,                      :utc_datetime)
     field(:current,                    :boolean)
+    field(:sequence_id,                :integer)
+    field(:change_id,                  :integer)
   end
 end
 
@@ -50,8 +51,6 @@ defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Party do
     pf_Party(
       id:
         Codec.encode(party.id),
-      event_id:
-        Codec.encode(party.event_id),
       event_created_at:
         Codec.encode(party.event_created_at),
       party_id:
@@ -87,7 +86,11 @@ defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Party do
       wtime:
         Codec.encode(party.wtime),
       current:
-        Codec.encode(party.current)
+        Codec.encode(party.current),
+      sequence_id:
+        Codec.encode(party.sequence_id),
+      change_id:
+        Codec.encode(party.change_id)
     )
   end
 end

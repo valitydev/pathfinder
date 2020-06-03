@@ -5,7 +5,6 @@ defmodule NewWay.Repo.Migrations.Shops do
     execute """
       CREATE TABLE nw.shop (
         id bigint NOT NULL,
-        event_id bigint NOT NULL,
         event_created_at timestamp without time zone NOT NULL,
         party_id character varying NOT NULL,
         shop_id character varying NOT NULL,
@@ -31,12 +30,13 @@ defmodule NewWay.Repo.Migrations.Shops do
         payout_schedule_id integer,
         wtime timestamp without time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
         current boolean DEFAULT true NOT NULL,
-        revision bigint
+        sequence_id integer,
+        change_id integer,
+        claim_effect_id integer
       );
     """
     execute """
       INSERT INTO nw.shop VALUES (
-        1,
         1,
         '2004-10-19 10:23:54',
         'test_party_id_1',
@@ -63,12 +63,13 @@ defmodule NewWay.Repo.Migrations.Shops do
         NULL,
         '2004-10-19 10:23:54',
         true,
+        1,
+        1,
         1
       )
     """
     execute """
       INSERT INTO nw.shop VALUES (
-        2,
         2,
         '2004-10-19 10:23:54',
         'test_party_id_2',
@@ -95,12 +96,13 @@ defmodule NewWay.Repo.Migrations.Shops do
         NULL,
         '2004-10-19 10:23:54',
         true,
+        2,
+        2,
         2
       )
     """
     execute """
       INSERT INTO nw.shop VALUES (
-        3,
         3,
         '2004-10-19 10:23:54',
         'test_party_id_3',
@@ -127,6 +129,8 @@ defmodule NewWay.Repo.Migrations.Shops do
         NULL,
         '2004-10-19 10:23:54',
         true,
+        3,
+        3,
         3
       )
     """

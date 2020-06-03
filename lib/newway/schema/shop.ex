@@ -16,7 +16,6 @@ defmodule NewWay.Schema.Shop do
 
   @schema_prefix "nw"
   schema "shop" do
-    field(:event_id,                   :integer)
     field(:event_created_at,           :utc_datetime)
     field(:party_id,                   :string)
     field(:shop_id,                    :string)
@@ -42,7 +41,9 @@ defmodule NewWay.Schema.Shop do
     field(:payout_schedule_id,         :integer)
     field(:wtime,                      :utc_datetime)
     field(:current,                    :boolean)
-    field(:revision,                   :integer)
+    field(:sequence_id,                :integer)
+    field(:change_id,                  :integer)
+    field(:claim_effect_id,            :integer)
   end
 end
 
@@ -58,8 +59,6 @@ defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Shop do
     pf_Shop(
       id:
         Codec.encode(shop.id),
-      event_id:
-        Codec.encode(shop.event_id),
       event_created_at:
         Codec.encode(shop.event_created_at),
       party_id:
@@ -110,8 +109,12 @@ defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Shop do
         Codec.encode(shop.wtime),
       current:
         Codec.encode(shop.current),
-      revision:
-        Codec.encode(shop.revision)
+      sequence_id:
+        Codec.encode(shop.sequence_id),
+      change_id:
+        Codec.encode(shop.change_id),
+      claim_effect_id:
+        Codec.encode(shop.claim_effect_id)
     )
   end
 end
