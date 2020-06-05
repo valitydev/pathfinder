@@ -9,6 +9,11 @@ defmodule Woody.Client do
     call(request, client)
   end
 
+  def search_related(params, client) do
+    request = {{:pathfinder_proto_lookup_thrift, :Lookup}, :SearchRelated, [params]}
+    call(request, client)
+  end
+
   defp call(request, client) do
     call_opts = %{
       :url => get_url(client[:base_url], request),

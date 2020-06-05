@@ -4,12 +4,14 @@ defmodule NewWay.Schema do
 
     ## Search by field
 
+    Performs a lookup for specified ids in :schema_field in a single query.
+    Only one key, defined in the schema itself, is supported.
+
     Usage:
+
       use NewWay.Schema, search_field: :schema_field
 
       MySchema.search([Pathfinder.lookup_id]) :: [%MySchema{}]
-
-    Performs a lookup for specified ids in :schema_field in a single query
   """
 
   @callback search([Pathfinder.lookup_id]) :: [struct]
@@ -17,6 +19,7 @@ defmodule NewWay.Schema do
   defmacro __using__(opts) do
     quote do
       @behaviour NewWay.Schema
+
       @spec search([Pathfinder.lookup_id]) :: [%__MODULE__{}]
       def search(ids) do
         require Ecto.Query

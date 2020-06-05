@@ -44,6 +44,20 @@ defmodule NewWay.Schema.Shop do
     field(:sequence_id,                :integer)
     field(:change_id,                  :integer)
     field(:claim_effect_id,            :integer)
+
+    belongs_to :party, NewWay.Schema.Party,
+      define_field: false
+
+    has_many :adjustments, NewWay.Schema.Adjustment,
+      foreign_key: :shop_id, references: :shop_id
+    has_many :invoices, NewWay.Schema.Invoice,
+      foreign_key: :shop_id, references: :shop_id
+    has_many :payments, NewWay.Schema.Payment,
+      foreign_key: :shop_id, references: :shop_id
+    has_many :payouts, NewWay.Schema.Payout,
+      foreign_key: :shop_id, references: :shop_id
+    has_many :refunds, NewWay.Schema.Refund,
+      foreign_key: :shop_id, references: :shop_id
   end
 end
 

@@ -33,6 +33,18 @@ defmodule NewWay.Schema.Invoice do
     field(:sequence_id,              :integer)
     field(:change_id,                :integer)
     field(:external_id,              :string)
+
+    belongs_to :party, NewWay.Schema.Party,
+      define_field: false
+    belongs_to :shop, NewWay.Schema.Shop,
+      define_field: false
+
+    has_many :adjustments, NewWay.Schema.Adjustment,
+      foreign_key: :invoice_id, references: :invoice_id
+    has_many :payments, NewWay.Schema.Payment,
+      foreign_key: :invoice_id, references: :invoice_id
+    has_many :refunds, NewWay.Schema.Refund,
+      foreign_key: :invoice_id, references: :invoice_id
   end
 end
 

@@ -94,6 +94,13 @@ defmodule NewWay.Schema.Payout do
     field(:fee,                                                        :integer)
     field(:currency_code,                                              :string)
     field(:wallet_id,                                                  :string)
+
+    belongs_to :party, NewWay.Schema.Party,
+      define_field: false
+    belongs_to :shop, NewWay.Schema.Shop,
+      define_field: false
+    belongs_to :wallet, NewWay.Schema.Wallet,
+      define_field: false
   end
 end
 

@@ -112,6 +112,13 @@ defmodule NewWay.Schema.Payment do
     field(:external_id,                                      :string)
     field(:payer_issuer_country,                             :string)
     field(:payer_bank_name,                                  :string)
+
+    belongs_to :party, NewWay.Schema.Party,
+      define_field: false
+    belongs_to :shop, NewWay.Schema.Shop,
+      define_field: false
+    belongs_to :invoice, NewWay.Schema.Invoice,
+      define_field: false
   end
 end
 

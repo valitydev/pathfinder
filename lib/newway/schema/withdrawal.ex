@@ -37,6 +37,11 @@ defmodule NewWay.Schema.Withdrawal do
     field(:external_id,                           :string)
     field(:context_json,                          :string)
     field(:withdrawal_status_failed_failure_json, :string)
+
+    belongs_to :destination, NewWay.Schema.Destination,
+      define_field: false
+    belongs_to :wallet, NewWay.Schema.Wallet,
+      define_field: false
   end
 end
 

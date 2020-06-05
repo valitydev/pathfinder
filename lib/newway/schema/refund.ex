@@ -35,6 +35,13 @@ defmodule NewWay.Schema.Refund do
     field(:sequence_id,                                      :integer)
     field(:change_id,                                        :integer)
     field(:external_id,                                      :string)
+
+    belongs_to :party, NewWay.Schema.Party,
+      define_field: false
+    belongs_to :shop, NewWay.Schema.Shop,
+      define_field: false
+    belongs_to :invoice, NewWay.Schema.Invoice,
+      define_field: false
   end
 end
 

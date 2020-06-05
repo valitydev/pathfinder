@@ -43,6 +43,14 @@ defmodule NewWay.Schema.Destination do
     field(:resource_bank_card_type,           :string)
     field(:resource_bank_card_issuer_country, :string)
     field(:resource_bank_card_bank_name,      :string)
+
+    belongs_to :party, NewWay.Schema.Party,
+      define_field: false
+    belongs_to :identity, NewWay.Schema.Identity,
+      define_field: false
+
+    has_many :withdrawals, NewWay.Schema.Withdrawal,
+      foreign_key: :destination_id, references: :destination_id
   end
 end
 

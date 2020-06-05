@@ -32,6 +32,13 @@ defmodule NewWay.Schema.Adjustment do
     field(:party_revision,      :integer)
     field(:sequence_id,         :integer)
     field(:change_id,           :integer)
+
+    belongs_to :party, NewWay.Schema.Party,
+      define_field: false
+    belongs_to :shop, NewWay.Schema.Shop,
+      define_field: false
+    belongs_to :invoice, NewWay.Schema.Invoice,
+      define_field: false
   end
 end
 

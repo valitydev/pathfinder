@@ -20,6 +20,14 @@ defmodule NewWay.Schema.Identity do
     field(:external_id,                           :string)
     field(:blocked,                               :boolean)
     field(:context_json,                          :string)
+
+    belongs_to :party, NewWay.Schema.Party,
+      define_field: false
+
+    has_many :destinations, NewWay.Schema.Destination,
+      foreign_key: :identity_id, references: :identity_id
+    has_many :wallets, NewWay.Schema.Wallet,
+      foreign_key: :identity_id, references: :identity_id
   end
 end
 

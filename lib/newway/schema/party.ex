@@ -36,6 +36,26 @@ defmodule NewWay.Schema.Party do
     field(:current,                    :boolean)
     field(:sequence_id,                :integer)
     field(:change_id,                  :integer)
+
+    has_many :adjustments, NewWay.Schema.Adjustment,
+      foreign_key: :party_id, references: :party_id
+    has_many :destinations, NewWay.Schema.Destination,
+      foreign_key: :party_id, references: :party_id
+    has_many :identities, NewWay.Schema.Identity,
+      foreign_key: :party_id, references: :party_id
+    has_many :invoices, NewWay.Schema.Invoice,
+      foreign_key: :party_id, references: :party_id
+    has_many :payments, NewWay.Schema.Payment,
+      foreign_key: :party_id, references: :party_id
+    has_many :payouts, NewWay.Schema.Payout,
+      foreign_key: :party_id, references: :party_id
+    has_many :refunds, NewWay.Schema.Refund,
+      foreign_key: :party_id, references: :party_id
+    has_many :shops, NewWay.Schema.Shop,
+      foreign_key: :party_id, references: :party_id
+    has_many :wallets, NewWay.Schema.Wallet,
+      foreign_key: :party_id, references: :party_id
+
   end
 end
 
