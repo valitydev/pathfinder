@@ -21,12 +21,10 @@ defmodule NewwayRepoTest do
         reason: "test_reason_1",
         wtime: ~U[2004-10-19 10:23:54Z],
         current: true,
-        fee: 10,
-        provider_fee: 10,
-        external_fee: 10,
         party_revision: 1,
         sequence_id: 1,
-        change_id: 1
+        change_id: 1,
+        amount: 1
       }
     ]
 

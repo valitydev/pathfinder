@@ -3,16 +3,6 @@ defmodule NewWay.Repo.Migrations.Payment do
 
   def up do
     execute """
-      CREATE TYPE nw.payment_status AS ENUM (
-        'pending',
-        'processed',
-        'captured',
-        'cancelled',
-        'refunded',
-        'failed'
-      )
-    """
-    execute """
       CREATE TYPE nw.payer_type AS ENUM (
         'payment_resource',
         'customer',
@@ -127,6 +117,5 @@ defmodule NewWay.Repo.Migrations.Payment do
     execute "DROP TYPE nw.payment_flow_type"
     execute "DROP TYPE nw.payment_tool_type"
     execute "DROP TYPE nw.payer_type"
-    execute "DROP TYPE nw.payment_status"
   end
 end

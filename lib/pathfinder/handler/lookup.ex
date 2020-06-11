@@ -115,9 +115,11 @@ defmodule Pathfinder.Handler.Lookup do
   @spec query_assoc_namespace(NewWay.schema_type, Pathfinder.lookup_namespace) ::
     [NewWay.schema_type]
   defp query_assoc_namespace(schema, namespace) do
+    limit = Application.get_env(:pathfinder, :assoc_query_limit, 15)
     require Ecto.Query
     Ecto.assoc(schema, namespace)
-    |> Ecto.Query.limit(10) # @TODO probably need to implement pagination later
+    |> Ecto.Query.order_by(desc: :id)
+    |> Ecto.Query.limit(^limit) # @TODO probably need to implement pagination later
     |> NewWay.Repo.all()
   end
 

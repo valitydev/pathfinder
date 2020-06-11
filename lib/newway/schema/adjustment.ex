@@ -26,12 +26,10 @@ defmodule NewWay.Schema.Adjustment do
     field(:reason,              :string)
     field(:wtime,               :utc_datetime)
     field(:current,             :boolean)
-    field(:fee,                 :integer)
-    field(:provider_fee,        :integer)
-    field(:external_fee,        :integer)
     field(:party_revision,      :integer)
     field(:sequence_id,         :integer)
     field(:change_id,           :integer)
+    field(:amount,              :integer)
 
     belongs_to :party, NewWay.Schema.Party,
       define_field: false
@@ -82,18 +80,14 @@ defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Adjustment do
         Codec.encode(adjustment.wtime),
       current:
         Codec.encode(adjustment.current),
-      fee:
-        Codec.encode(adjustment.fee),
-      provider_fee:
-        Codec.encode(adjustment.provider_fee),
-      external_fee:
-        Codec.encode(adjustment.external_fee),
       party_revision:
         Codec.encode(adjustment.party_revision),
       sequence_id:
         Codec.encode(adjustment.sequence_id),
       change_id:
-        Codec.encode(adjustment.change_id)
+        Codec.encode(adjustment.change_id),
+      amount:
+        Codec.encode(adjustment.amount)
     )
   end
 end

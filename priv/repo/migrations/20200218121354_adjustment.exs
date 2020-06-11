@@ -3,6 +3,16 @@ defmodule NewWay.Repo.Migrations.Adjustment do
 
   def up do
     execute """
+      CREATE TYPE nw.payment_status AS ENUM (
+        'pending',
+        'processed',
+        'captured',
+        'cancelled',
+        'refunded',
+        'failed'
+      )
+    """
+    execute """
       CREATE TYPE nw.adjustment_status AS ENUM (
         'pending',
         'captured',
@@ -27,18 +37,18 @@ defmodule NewWay.Repo.Migrations.Adjustment do
         reason character varying NOT NULL,
         wtime timestamp without time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
         current boolean DEFAULT true NOT NULL,
-        fee bigint,
-        provider_fee bigint,
-        external_fee bigint,
-        party_revision bigint,
+        payment_status nw.payment_status,
         sequence_id bigint,
-        change_id integer
-      )
+        change_id integer,
+        party_revision bigint,
+        amount bigint NOT NULL
+      );
     """
   end
 
   def down do
     execute "DROP TABLE nw.adjustment"
     execute "DROP TYPE nw.adjustment_status"
+    execute "DROP TYPE nw.payment_status"
   end
 end
