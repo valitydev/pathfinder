@@ -25,7 +25,8 @@ defmodule NewWay.Schema.Withdrawal do
     field(:wallet_id,                             :string)
     field(:destination_id,                        :string)
     field(:withdrawal_id,                         :string)
-    field(:provider_id,                           :string)
+    field(:provider_id,                           :integer)
+    field(:provider_id_legacy,                    :string)
     field(:amount,                                :integer)
     field(:currency_code,                         :string)
     field(:withdrawal_status,                     WithdrawalStatus)
@@ -72,7 +73,7 @@ defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Withdrawal do
       withdrawal_id:
         Codec.encode(withdrawal.withdrawal_id),
       provider_id:
-        Codec.encode(withdrawal.provider_id),
+        Codec.encode(withdrawal.provider_id_legacy), #@TODO change back to provider_id
       amount:
         Codec.encode(withdrawal.amount),
       currency_code:

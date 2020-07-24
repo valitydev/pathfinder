@@ -96,7 +96,7 @@ defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Party do
       suspension_suspended_since:
         Codec.encode(party.suspension_suspended_since),
       revision:
-        Codec.encode(party.revision),
+        Codec.encode(define(:integer, party.revision)), # Sometimes NULL apparently
       revision_changed_at:
         Codec.encode(party.revision_changed_at),
       party_meta_set_ns:
@@ -113,4 +113,8 @@ defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Party do
         Codec.encode(party.change_id)
     )
   end
+
+  defp define(:integer, nil), do: 0
+  defp define(_type, v), do: v
+
 end
