@@ -5,13 +5,15 @@ defmodule Pathfinder.Handler.Lookup do
   Proto.import_records([
     :pf_LookupParameters,
     :pf_RelationParameters,
+    :pf_Filter,
+    :pf_Result,
     :pf_InvalidArguments
   ])
 
   @type lookup_parameters_thrift :: :pathfinder_proto_lookup_thrift."LookupParameters"()
   @type relation_parameters_thrift :: :pathfinder_proto_lookup_thrift."RelationParameters"()
   @type search_results_thrift :: :pathfinder_proto_lookup_thrift."SearchResults"()
-  @type result_data_thrift :: :pathfinder_proto_lookup_thrift."ResultData"()
+  @type result_thrift :: :pathfinder_proto_lookup_thrift."Result"()
   @type invalid_arguments_thrift :: :pathfinder_proto_lookup_thrift."InvalidArguments"()
 
   @behaviour :woody_server_thrift_handler
@@ -36,28 +38,27 @@ defmodule Pathfinder.Handler.Lookup do
 
   @spec handle_function_(:woody.func, :woody.args, :woody_context.ctx, :woody.options) ::
     {:ok, :woody.result} | no_return
-  defp handle_function_(:Lookup, [lookup_parameters], _context, _opts) do
-    handle_lookup(lookup_parameters)
-  end
-  defp handle_function_(:SearchRelated, [relation_parameters], _context, _opts) do
-    handle_search_related(relation_parameters)
-  end
+  defp handle_function_(:Lookup, [lookup_parameters, filter], _context, _opts),
+    do: handle_lookup(lookup_parameters, from_thrift(filter))
+  defp handle_function_(:SearchRelated, [relation_parameters, filter], _context, _opts),
+    do: handle_search_related(relation_parameters, from_thrift(filter))
 
   ## Handler functions
 
-  @spec handle_lookup(lookup_parameters_thrift) ::
+  @spec handle_lookup(lookup_parameters_thrift, NewWay.filter) ::
     {:ok, search_results_thrift}
-  defp handle_lookup(pf_LookupParameters(ids: target_ids, namespaces: namespaces)) do
-    _ = :logger.info("Received request for Lookup. IDs: #{target_ids}, Namespaces: #{inspect namespaces}")
+  defp handle_lookup(pf_LookupParameters(ids: target_ids, namespaces: target_namespaces), filter) do
+    _ = :logger.info("Received request for Lookup. IDs: #{target_ids}, Namespaces: #{inspect target_namespaces}")
 
-    lookup_result = do_lookup(target_ids, define_namespaces(namespaces))
+    namespaces = limit_to_global_namespaces(define_namespaces(target_namespaces))
+    lookup_result = do_lookup(namespaces, target_ids, filter)
 
-    {:ok, lookup_result}
+    {:ok, to_thrift(lookup_result)}
   end
 
-  @spec handle_search_related(relation_parameters_thrift) ::
+  @spec handle_search_related(relation_parameters_thrift, NewWay.filter) ::
     {:ok, search_results_thrift} | no_return
-  defp handle_search_related(relation_parameters) do
+  defp handle_search_related(relation_parameters, filter) do
     pf_RelationParameters(
       parent_id: parent_id,
       parent_namespace: parent_namespace,
@@ -69,92 +70,35 @@ defmodule Pathfinder.Handler.Lookup do
       "Parent: #{parent_namespace} #{parent_id}, Children: #{inspect child_namespaces}"
     )
 
-    case lookup_global_schema([parent_id], parent_namespace) do
-      [parent | _] ->
-        {:ok, get_children_of(parent, define_namespaces(child_namespaces))}
-      [] ->
+    namespaces = define_namespaces(child_namespaces)
+    case NewWay.search_assoc(parent_namespace, parent_id, namespaces, filter) do
+      {:ok, results} ->
+        {:ok, to_thrift(results)};
+      {:error, :parent_not_found} ->
         throw(pf_InvalidArguments(reason: "Parent does not exist"))
     end
   end
 
   ## Handler utilities
 
-  @spec do_lookup([Pathfinder.lookup_id], [Pathfinder.lookup_namespace]) ::
-    [result_data_thrift]
-  defp do_lookup(ids, namespaces) do
+  defp do_lookup(namespaces, target_ids, filter) do
     namespaces
     |> Enum.reduce([], fn(namespace, acc) ->
-          case lookup_global_schema(ids, namespace) do
+          case NewWay.search(namespace, target_ids, filter) do
             [] -> acc
-            results -> [to_thrift(namespace, results) | acc]
+            results -> results ++ acc
           end
         end)
     |> Enum.reverse
   end
-
-  @spec get_children_of(NewWay.schema_type, [Pathfinder.lookup_namespace]) ::
-    [result_data_thrift]
-  defp get_children_of(parent_schema, child_namespaces) do
-    filter_assoc_namespaces(parent_schema, child_namespaces)
-    |> Enum.reduce([], fn(namespace, acc) ->
-          case query_assoc_namespace(parent_schema, namespace) do
-            [] -> acc
-            results -> [to_thrift(namespace, results) | acc]
-          end
-        end)
-    |> Enum.reverse
-  end
-
-  @spec filter_assoc_namespaces(NewWay.schema_type, [Pathfinder.lookup_namespace]) ::
-    [Pathfinder.lookup_namespace]
-  defp filter_assoc_namespaces(%schema_type{}, namespaces) do
-    schema_type.__schema__(:associations)
-    |> Enum.filter(fn association -> Enum.member?(namespaces, association) end)
-  end
-
-  @spec query_assoc_namespace(NewWay.schema_type, Pathfinder.lookup_namespace) ::
-    [NewWay.schema_type]
-  defp query_assoc_namespace(schema, namespace) do
-    limit = Application.get_env(:pathfinder, :assoc_query_limit, 15)
-    require Ecto.Query
-    Ecto.assoc(schema, namespace)
-    |> Ecto.Query.order_by(desc: :id)
-    |> Ecto.Query.limit(^limit) # @TODO probably need to implement pagination later
-    |> NewWay.Repo.all()
-  end
-
-  # Yes, Dialyzer, I know that the three last cases will never be matched (for now)
-  @dialyzer {:nowarn_function, get_schema_module: 1}
-
-  @spec get_schema_module(Pathfinder.lookup_namespace) ::
-    module
-  defp get_schema_module(:destinations), do: NewWay.Schema.Destination
-  defp get_schema_module(:identities),   do: NewWay.Schema.Identity
-  defp get_schema_module(:invoices),     do: NewWay.Schema.Invoice
-  defp get_schema_module(:parties),      do: NewWay.Schema.Party
-  defp get_schema_module(:payouts),      do: NewWay.Schema.Payout
-  defp get_schema_module(:shops),        do: NewWay.Schema.Shop
-  defp get_schema_module(:wallets),      do: NewWay.Schema.Wallet
-  defp get_schema_module(:withdrawals),  do: NewWay.Schema.Withdrawal
-  defp get_schema_module(:adjustments),  do: NewWay.Schema.Adjustment
-  defp get_schema_module(:refunds),      do: NewWay.Schema.Refund
-  defp get_schema_module(:payments),     do: NewWay.Schema.Payment
-
 
   @global_namespaces [:destinations, :identities, :invoices, :parties, :payouts, :shops, :wallets, :withdrawals]
   @all_namespaces [:adjustments, :refunds, :payments | @global_namespaces]
 
-  @spec lookup_global_schema([Pathfinder.lookup_id], Pathfinder.lookup_namespace) ::
-    [NewWay.schema_type]
-  defp lookup_global_schema(ids, namespace) when namespace in @global_namespaces,
-    do: lookup_schema(ids, namespace)
-  defp lookup_global_schema(_ids, _namespace), # Ignore namespaces without global id's
-    do: []
-
-  @spec lookup_schema([Pathfinder.lookup_id], Pathfinder.lookup_namespace) ::
-    [NewWay.schema_type]
-  defp lookup_schema(ids, namespace),
-    do: get_schema_module(namespace).search(ids)
+  @spec limit_to_global_namespaces([Pathfinder.lookup_namespace]) ::
+    [Pathfinder.lookup_namespace]
+  defp limit_to_global_namespaces(namespaces),
+    do: Enum.drop_while(namespaces, fn ns -> not Enum.member?(@global_namespaces, ns) end)
 
   @spec define_namespaces([Pathfinder.lookup_namespace] | :undefined) ::
     [Pathfinder.lookup_namespace]
@@ -163,9 +107,12 @@ defmodule Pathfinder.Handler.Lookup do
   defp define_namespaces(:undefined),
     do: @all_namespaces
 
-  @spec to_thrift(Pathfinder.lookup_namespace, [struct]) ::
-    result_data_thrift
-  defp to_thrift(namespace, list) when is_list(list),
-    do: {namespace, Enum.map(list, &Pathfinder.Thrift.Codec.encode/1)}
+  defp to_thrift(list) when is_list(list),
+    do: Enum.map(list, &to_thrift/1)
+  defp to_thrift(data),
+    do: Pathfinder.Thrift.Codec.encode(data)
+
+  defp from_thrift(thrift),
+    do: Pathfinder.Thrift.Codec.decode(thrift)
 
 end

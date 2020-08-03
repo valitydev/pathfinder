@@ -31,50 +31,15 @@ defmodule NewWay.Schema.Identity do
   end
 end
 
-defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Identity do
-  alias Pathfinder.Thrift.Codec
-  require Pathfinder.Thrift.Proto, as: Proto
+defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Identity do
+  alias NewWay.SearchResult
 
-  @type identity_thrift :: :pathfinder_proto_lookup_thrift."Identity"()
-  Proto.import_records([:pf_Identity])
-
-  @spec encode(%NewWay.Schema.Identity{}) :: identity_thrift
+  @spec encode(%NewWay.Schema.Identity{}) :: %SearchResult{}
   def encode(identity) do
-    pf_Identity(
-      id:
-        Codec.encode(identity.id),
-      event_id:
-        Codec.encode(identity.event_id),
-      event_created_at:
-        Codec.encode(identity.event_created_at),
-      event_occured_at:
-        Codec.encode(identity.event_occured_at),
-      sequence_id:
-        Codec.encode(identity.sequence_id),
-      party_id:
-        Codec.encode(identity.party_id),
-      party_contract_id:
-        Codec.encode(identity.party_contract_id),
-      identity_id:
-        Codec.encode(identity.identity_id),
-      identity_provider_id:
-        Codec.encode(identity.identity_provider_id),
-      identity_class_id:
-        Codec.encode(identity.identity_class_id),
-      identity_effective_chalenge_id:
-        Codec.encode(identity.identity_effective_chalenge_id),
-      identity_level_id:
-        Codec.encode(identity.identity_level_id),
-      wtime:
-        Codec.encode(identity.wtime),
-      current:
-        Codec.encode(identity.current),
-      external_id:
-        Codec.encode(identity.external_id),
-      blocked:
-        Codec.encode(identity.blocked),
-      context_json:
-        Codec.encode(identity.context_json)
-    )
+    %SearchResult{
+      id: identity.identity_id,
+      ns: :identities,
+      data: identity
+    }
   end
 end

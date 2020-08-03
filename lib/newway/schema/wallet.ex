@@ -31,46 +31,15 @@ defmodule NewWay.Schema.Wallet do
   end
 end
 
-defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Wallet do
-  alias Pathfinder.Thrift.Codec
-  require Pathfinder.Thrift.Proto, as: Proto
+defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Wallet do
+  alias NewWay.SearchResult
 
-  @type wallet_thrift :: :pathfinder_proto_lookup_thrift."Wallet"()
-  Proto.import_records([:pf_Wallet])
-
-  @spec encode(%NewWay.Schema.Wallet{}) :: wallet_thrift
+  @spec encode(%NewWay.Schema.Wallet{}) :: %SearchResult{}
   def encode(wallet) do
-    pf_Wallet(
-      id:
-        Codec.encode(wallet.id),
-      event_id:
-        Codec.encode(wallet.event_id),
-      event_created_at:
-        Codec.encode(wallet.event_created_at),
-      event_occured_at:
-        Codec.encode(wallet.event_occured_at),
-      sequence_id:
-        Codec.encode(wallet.sequence_id),
-      wallet_id:
-        Codec.encode(wallet.wallet_id),
-      wallet_name:
-        Codec.encode(wallet.wallet_name),
-      identity_id:
-        Codec.encode(wallet.identity_id),
-      party_id:
-        Codec.encode(wallet.party_id),
-      currency_code:
-        Codec.encode(wallet.currency_code),
-      wtime:
-        Codec.encode(wallet.wtime),
-      current:
-        Codec.encode(wallet.current),
-      account_id:
-        Codec.encode(wallet.account_id),
-      accounter_account_id:
-        Codec.encode(wallet.accounter_account_id),
-      external_id:
-        Codec.encode(wallet.external_id)
-    )
+    %SearchResult{
+      id: wallet.wallet_id,
+      ns: :wallets,
+      data: wallet
+    }
   end
 end

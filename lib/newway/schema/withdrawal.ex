@@ -46,56 +46,15 @@ defmodule NewWay.Schema.Withdrawal do
   end
 end
 
-defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Withdrawal do
-  alias Pathfinder.Thrift.Codec
-  require Pathfinder.Thrift.Proto, as: Proto
+defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Withdrawal do
+  alias NewWay.SearchResult
 
-  @type withdrawal_thrift :: :pathfinder_proto_lookup_thrift."Withdrawal"()
-  Proto.import_records([:pf_Withdrawal])
-
-  @spec encode(%NewWay.Schema.Withdrawal{}) :: withdrawal_thrift
+  @spec encode(%NewWay.Schema.Withdrawal{}) :: %SearchResult{}
   def encode(withdrawal) do
-    pf_Withdrawal(
-      id:
-        Codec.encode(withdrawal.id),
-      event_id:
-        Codec.encode(withdrawal.event_id),
-      event_created_at:
-        Codec.encode(withdrawal.event_created_at),
-      event_occured_at:
-        Codec.encode(withdrawal.event_occured_at),
-      sequence_id:
-        Codec.encode(withdrawal.sequence_id),
-      wallet_id:
-        Codec.encode(withdrawal.wallet_id),
-      destination_id:
-        Codec.encode(withdrawal.destination_id),
-      withdrawal_id:
-        Codec.encode(withdrawal.withdrawal_id),
-      provider_id:
-        Codec.encode(withdrawal.provider_id_legacy), #@TODO change back to provider_id
-      amount:
-        Codec.encode(withdrawal.amount),
-      currency_code:
-        Codec.encode(withdrawal.currency_code),
-      withdrawal_status:
-        Codec.encode(withdrawal.withdrawal_status),
-      withdrawal_transfer_status:
-        Codec.encode(withdrawal.withdrawal_transfer_status),
-      wtime:
-        Codec.encode(withdrawal.wtime),
-      current:
-        Codec.encode(withdrawal.current),
-      fee:
-        Codec.encode(withdrawal.fee),
-      provider_fee:
-        Codec.encode(withdrawal.provider_fee),
-      external_id:
-        Codec.encode(withdrawal.external_id),
-      context_json:
-        Codec.encode(withdrawal.context_json),
-      withdrawal_status_failed_failure_json:
-        Codec.encode(withdrawal.withdrawal_status_failed_failure_json)
-    )
+    %SearchResult{
+      id: withdrawal.withdrawal_id,
+      ns: :withdrawals,
+      data: withdrawal
+    }
   end
 end

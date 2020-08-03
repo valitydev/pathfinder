@@ -11,7 +11,7 @@ config :pathfinder, Woody.Server,
 
 config :pathfinder, NewWay.Repo,
   database: "nw",
-  username: "postgres",
+  username: "nw",
   password: "postgres",
   hostname: "postgres"
 

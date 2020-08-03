@@ -40,54 +40,15 @@ defmodule NewWay.Schema.Adjustment do
   end
 end
 
-defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Adjustment do
-  alias Pathfinder.Thrift.Codec
-  require Pathfinder.Thrift.Proto, as: Proto
+defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Adjustment do
+  alias NewWay.SearchResult
 
-  @type adjustment_thrift :: :pathfinder_proto_lookup_thrift."Adjustment"()
-  Proto.import_records([:pf_Adjustment])
-
-  @spec encode(%NewWay.Schema.Adjustment{}) :: adjustment_thrift
+  @spec encode(%NewWay.Schema.Adjustment{}) :: %SearchResult{}
   def encode(adjustment) do
-    pf_Adjustment(
-      id:
-        Codec.encode(adjustment.id),
-      event_created_at:
-        Codec.encode(adjustment.event_created_at),
-      domain_revision:
-        Codec.encode(adjustment.domain_revision),
-      adjustment_id:
-        Codec.encode(adjustment.adjustment_id),
-      payment_id:
-        Codec.encode(adjustment.payment_id),
-      invoice_id:
-        Codec.encode(adjustment.invoice_id),
-      party_id:
-        Codec.encode(adjustment.party_id),
-      shop_id:
-        Codec.encode(adjustment.shop_id),
-      created_at:
-        Codec.encode(adjustment.created_at),
-      status:
-        Codec.encode(adjustment.status),
-      status_captured_at:
-        Codec.encode(adjustment.status_captured_at),
-      status_cancelled_at:
-        Codec.encode(adjustment.status_cancelled_at),
-      reason:
-        Codec.encode(adjustment.reason),
-      wtime:
-        Codec.encode(adjustment.wtime),
-      current:
-        Codec.encode(adjustment.current),
-      party_revision:
-        Codec.encode(adjustment.party_revision),
-      sequence_id:
-        Codec.encode(adjustment.sequence_id),
-      change_id:
-        Codec.encode(adjustment.change_id),
-      amount:
-        Codec.encode(adjustment.amount)
-    )
+    %SearchResult{
+      id: adjustment.adjustment_id,
+      ns: :adjustments,
+      data: adjustment
+    }
   end
 end

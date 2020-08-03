@@ -22,6 +22,9 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: nw
+      POSTGRES_USER: nw
+    volumes:
+      - ./var/test/newway.init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 1s

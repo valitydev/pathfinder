@@ -11,21 +11,29 @@ defmodule NewWay.Schema do
 
       use NewWay.Schema, search_field: :schema_field
 
-      MySchema.search([Pathfinder.lookup_id]) :: [%MySchema{}]
+      MySchema.search([NewWay.lookup_id]) :: [%MySchema{}]
   """
 
-  @callback search([Pathfinder.lookup_id]) :: [struct]
+  @callback search([NewWay.search_id], NewWay.filter) :: [struct]
 
   defmacro __using__(opts) do
     quote do
       @behaviour NewWay.Schema
 
-      @spec search([Pathfinder.lookup_id]) :: [%__MODULE__{}]
-      def search(ids) do
+      @spec search([NewWay.search_id], NewWay.filter) :: [%__MODULE__{}]
+      def search(ids, filter) do
+        alias NewWay.Filter
         require Ecto.Query
-        __MODULE__
-        |> Ecto.Query.where([a], a.unquote(opts[:search_field]) in ^ids)
-        |> Ecto.Query.limit(unquote(Keyword.get(opts, :limit, 10)))
+        q0 = case filter.is_current do
+          :ignore ->
+            Ecto.Query.where(__MODULE__, [a], a.unquote(opts[:search_field]) in ^ids)
+          current ->
+            Ecto.Query.where(__MODULE__, [a], a.unquote(opts[:search_field]) in ^ids and a.current == ^current)
+        end
+
+        q0
+        |> Ecto.Query.limit(^filter.limit)
+        |> Ecto.Query.offset(^filter.offset)
         |> NewWay.Repo.all()
       end
     end

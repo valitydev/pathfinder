@@ -3,27 +3,6 @@ defmodule NewWay.Repo.Migrations.Identities do
 
   def up do
     execute """
-      CREATE TABLE nw.identity (
-          id bigint NOT NULL,
-          event_id bigint NOT NULL,
-          event_created_at timestamp without time zone NOT NULL,
-          event_occured_at timestamp without time zone NOT NULL,
-          sequence_id integer NOT NULL,
-          party_id character varying NOT NULL,
-          party_contract_id character varying,
-          identity_id character varying NOT NULL,
-          identity_provider_id character varying NOT NULL,
-          identity_class_id character varying NOT NULL,
-          identity_effective_chalenge_id character varying,
-          identity_level_id character varying,
-          wtime timestamp without time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
-          current boolean DEFAULT true NOT NULL,
-          external_id character varying,
-          blocked boolean,
-          context_json character varying
-      );
-    """
-    execute """
       INSERT INTO nw.identity VALUES (
         1,
         1,
@@ -89,6 +68,8 @@ defmodule NewWay.Repo.Migrations.Identities do
   end
 
   def down do
-    execute "DROP TABLE nw.identity"
+    execute "DELETE FROM nw.identity WHERE id = 1"
+    execute "DELETE FROM nw.identity WHERE id = 2"
+    execute "DELETE FROM nw.identity WHERE id = 3"
   end
 end

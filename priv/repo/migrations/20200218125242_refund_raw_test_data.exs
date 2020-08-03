@@ -94,5 +94,6 @@ defmodule NewWay.Repo.Migrations.RefundRawTestData do
   def down do
     execute "DELETE FROM nw.refund WHERE id = 1"
     execute "DELETE FROM nw.refund WHERE id = 2"
+    execute "DELETE FROM nw.refund WHERE id = 3"
   end
 end

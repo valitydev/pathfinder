@@ -48,60 +48,15 @@ defmodule NewWay.Schema.Invoice do
   end
 end
 
-defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Invoice do
-  alias Pathfinder.Thrift.Codec
-  require Pathfinder.Thrift.Proto, as: Proto
+defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Invoice do
+  alias NewWay.SearchResult
 
-  @type invoice_thrift :: :pathfinder_proto_lookup_thrift."Invoice"()
-  Proto.import_records([:pf_Invoice])
-
-  @spec encode(%NewWay.Schema.Invoice{}) :: invoice_thrift
+  @spec encode(%NewWay.Schema.Invoice{}) :: %SearchResult{}
   def encode(invoice) do
-    pf_Invoice(
-      id:
-        Codec.encode(invoice.id),
-      event_created_at:
-        Codec.encode(invoice.event_created_at),
-      invoice_id:
-        Codec.encode(invoice.invoice_id),
-      party_id:
-        Codec.encode(invoice.party_id),
-      shop_id:
-        Codec.encode(invoice.shop_id),
-      party_revision:
-        Codec.encode(invoice.party_revision),
-      created_at:
-        Codec.encode(invoice.created_at),
-      status:
-        Codec.encode(invoice.status),
-      status_cancelled_details:
-        Codec.encode(invoice.status_cancelled_details),
-      status_fulfilled_details:
-        Codec.encode(invoice.status_fulfilled_details),
-      details_product:
-        Codec.encode(invoice.details_product),
-      details_description:
-        Codec.encode(invoice.details_description),
-      due:
-        Codec.encode(invoice.due),
-      amount:
-        Codec.encode(invoice.amount),
-      currency_code:
-        Codec.encode(invoice.currency_code),
-      context:
-        Codec.encode(invoice.context),
-      template_id:
-        Codec.encode(invoice.template_id),
-      wtime:
-        Codec.encode(invoice.wtime),
-      current:
-        Codec.encode(invoice.current),
-      sequence_id:
-        Codec.encode(invoice.sequence_id),
-      change_id:
-        Codec.encode(invoice.change_id),
-      external_id:
-        Codec.encode(invoice.external_id)
-    )
+    %SearchResult{
+      id: invoice.invoice_id,
+      ns: :invoices,
+      data: invoice
+    }
   end
 end

@@ -5,12 +5,12 @@ defmodule Woody.Client do
   ]
 
   def lookup(params, client) do
-    request = {{:pathfinder_proto_lookup_thrift, :Lookup}, :Lookup, [params]}
+    request = {{:pathfinder_proto_lookup_thrift, :Lookup}, :Lookup, params}
     call(request, client)
   end
 
   def search_related(params, client) do
-    request = {{:pathfinder_proto_lookup_thrift, :Lookup}, :SearchRelated, [params]}
+    request = {{:pathfinder_proto_lookup_thrift, :Lookup}, :SearchRelated, params}
     call(request, client)
   end
 

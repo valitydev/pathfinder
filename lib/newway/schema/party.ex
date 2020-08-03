@@ -59,62 +59,15 @@ defmodule NewWay.Schema.Party do
   end
 end
 
-defimpl Pathfinder.Thrift.Codec, for: NewWay.Schema.Party do
-  alias Pathfinder.Thrift.Codec
-  require Pathfinder.Thrift.Proto, as: Proto
+defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Party do
+  alias NewWay.SearchResult
 
-  @type party_thrift :: :pathfinder_proto_lookup_thrift."Party"()
-  Proto.import_records([:pf_Party])
-
-  @spec encode(%NewWay.Schema.Party{}) :: party_thrift
+  @spec encode(%NewWay.Schema.Party{}) :: %SearchResult{}
   def encode(party) do
-    pf_Party(
-      id:
-        Codec.encode(party.id),
-      event_created_at:
-        Codec.encode(party.event_created_at),
-      party_id:
-        Codec.encode(party.party_id),
-      contact_info_email:
-        Codec.encode(party.contact_info_email),
-      created_at:
-        Codec.encode(party.created_at),
-      blocking:
-        Codec.encode(party.blocking),
-      blocking_unblocked_reason:
-        Codec.encode(party.blocking_unblocked_reason),
-      blocking_unblocked_since:
-        Codec.encode(party.blocking_unblocked_since),
-      blocking_blocked_reason:
-        Codec.encode(party.blocking_blocked_reason),
-      blocking_blocked_since:
-        Codec.encode(party.blocking_blocked_since),
-      suspension:
-        Codec.encode(party.suspension),
-      suspension_active_since:
-        Codec.encode(party.suspension_active_since),
-      suspension_suspended_since:
-        Codec.encode(party.suspension_suspended_since),
-      revision:
-        Codec.encode(define(:integer, party.revision)), # Sometimes NULL apparently
-      revision_changed_at:
-        Codec.encode(party.revision_changed_at),
-      party_meta_set_ns:
-        Codec.encode(party.party_meta_set_ns),
-      party_meta_set_data_json:
-        Codec.encode(party.party_meta_set_data_json),
-      wtime:
-        Codec.encode(party.wtime),
-      current:
-        Codec.encode(party.current),
-      sequence_id:
-        Codec.encode(party.sequence_id),
-      change_id:
-        Codec.encode(party.change_id)
-    )
+    %SearchResult{
+      id: party.party_id,
+      ns: :parties,
+      data: party
+    }
   end
-
-  defp define(:integer, nil), do: 0
-  defp define(_type, v), do: v
-
 end

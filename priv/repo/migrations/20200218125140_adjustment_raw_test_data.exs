@@ -3,7 +3,30 @@ defmodule NewWay.Repo.Migrations.AdjustmentRawTestData do
 
   def up do
     execute """
-      INSERT INTO nw.adjustment VALUES (
+      INSERT INTO nw.adjustment
+      (
+        id,
+        event_created_at,
+        domain_revision,
+        adjustment_id,
+        payment_id,
+        invoice_id,
+        party_id,
+        shop_id,
+        created_at,
+        status,
+        status_captured_at,
+        status_cancelled_at,
+        reason,
+        wtime,
+        current,
+        payment_status,
+        sequence_id,
+        change_id,
+        party_revision,
+        amount
+      )
+      VALUES (
         1,
         '2004-10-19 10:23:54',
         1,
@@ -27,7 +50,30 @@ defmodule NewWay.Repo.Migrations.AdjustmentRawTestData do
       )
     """
     execute """
-      INSERT INTO nw.adjustment VALUES (
+      INSERT INTO nw.adjustment
+      (
+        id,
+        event_created_at,
+        domain_revision,
+        adjustment_id,
+        payment_id,
+        invoice_id,
+        party_id,
+        shop_id,
+        created_at,
+        status,
+        status_captured_at,
+        status_cancelled_at,
+        reason,
+        wtime,
+        current,
+        payment_status,
+        sequence_id,
+        change_id,
+        party_revision,
+        amount
+      )
+      VALUES (
         2,
         '2004-10-19 11:23:54',
         2,
@@ -51,7 +97,30 @@ defmodule NewWay.Repo.Migrations.AdjustmentRawTestData do
       )
     """
     execute """
-      INSERT INTO nw.adjustment VALUES (
+      INSERT INTO nw.adjustment
+      (
+        id,
+        event_created_at,
+        domain_revision,
+        adjustment_id,
+        payment_id,
+        invoice_id,
+        party_id,
+        shop_id,
+        created_at,
+        status,
+        status_captured_at,
+        status_cancelled_at,
+        reason,
+        wtime,
+        current,
+        payment_status,
+        sequence_id,
+        change_id,
+        party_revision,
+        amount
+      )
+      VALUES (
         3,
         '2004-10-19 12:23:54',
         3,

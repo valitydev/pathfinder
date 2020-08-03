@@ -3,7 +3,29 @@ defmodule NewWay.Repo.Migrations.WithdrawalRawTestData do
 
   def up do
     execute """
-      INSERT INTO nw.withdrawal VALUES (
+      INSERT INTO nw.withdrawal (
+        id,
+        event_id,
+        event_created_at,
+        event_occured_at,
+        sequence_id,
+        wallet_id,
+        destination_id,
+        withdrawal_id,
+        provider_id,
+        provider_id_legacy,
+        amount,
+        currency_code,
+        withdrawal_status,
+        withdrawal_transfer_status,
+        wtime,
+        current,
+        fee,
+        provider_fee,
+        external_id,
+        context_json,
+        withdrawal_status_failed_failure_json
+      ) VALUES (
         1,
         1,
         '2004-10-19 10:23:54',
@@ -28,7 +50,29 @@ defmodule NewWay.Repo.Migrations.WithdrawalRawTestData do
       )
     """
     execute """
-      INSERT INTO nw.withdrawal VALUES (
+      INSERT INTO nw.withdrawal (
+        id,
+        event_id,
+        event_created_at,
+        event_occured_at,
+        sequence_id,
+        wallet_id,
+        destination_id,
+        withdrawal_id,
+        provider_id,
+        provider_id_legacy,
+        amount,
+        currency_code,
+        withdrawal_status,
+        withdrawal_transfer_status,
+        wtime,
+        current,
+        fee,
+        provider_fee,
+        external_id,
+        context_json,
+        withdrawal_status_failed_failure_json
+      ) VALUES (
         2,
         2,
         '2004-10-19 11:23:54',
@@ -53,7 +97,29 @@ defmodule NewWay.Repo.Migrations.WithdrawalRawTestData do
       )
     """
     execute """
-      INSERT INTO nw.withdrawal VALUES (
+      INSERT INTO nw.withdrawal (
+        id,
+        event_id,
+        event_created_at,
+        event_occured_at,
+        sequence_id,
+        wallet_id,
+        destination_id,
+        withdrawal_id,
+        provider_id,
+        provider_id_legacy,
+        amount,
+        currency_code,
+        withdrawal_status,
+        withdrawal_transfer_status,
+        wtime,
+        current,
+        fee,
+        provider_fee,
+        external_id,
+        context_json,
+        withdrawal_status_failed_failure_json
+      ) VALUES (
         3,
         3,
         '2004-10-19 12:23:54',
