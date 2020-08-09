@@ -12,12 +12,14 @@ defmodule Pathfinder.Thrift.Codec do
   def encode(%NewWay.SearchResult{
     id: id,
     ns: ns,
-    data: data
+    data: data,
+    created_at: created_at
   }) do
     pf_Result(
       id: id,
       ns: ns,
-      data: encode_nw_schema(data)
+      data: encode_nw_schema(data),
+      created_at: DateTime.to_iso8601(created_at)
     )
   end
 

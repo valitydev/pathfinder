@@ -2,6 +2,8 @@ defmodule NewWay.Schema.Identity do
   use Ecto.Schema
   use NewWay.Schema, search_field: :identity_id
 
+  @type t :: Ecto.Schema.t
+
   @schema_prefix "nw"
   schema "identity" do
     field(:event_id,                              :integer)
@@ -34,12 +36,13 @@ end
 defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Identity do
   alias NewWay.SearchResult
 
-  @spec encode(%NewWay.Schema.Identity{}) :: %SearchResult{}
+  @spec encode(NewWay.Schema.Identity.t) :: SearchResult.t
   def encode(identity) do
     %SearchResult{
       id: identity.identity_id,
       ns: :identities,
-      data: identity
+      data: identity,
+      created_at: identity.wtime
     }
   end
 end

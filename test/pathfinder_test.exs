@@ -173,5 +173,13 @@ defmodule PathfinderTest do
 
     filter2 = pf_Filter(is_current: false)
     {:ok, []} = Client.lookup([lookup_request, filter2], ctx[:client])
+
+    relation_params0 = pf_RelationParameters(
+      parent_namespace: :invoices,
+      parent_id: "test_invoice_id_1",
+      child_namespaces: [:payments]
+    )
+
+    {:ok, []} = Client.search_related([relation_params0, filter2], ctx[:client])
   end
 end

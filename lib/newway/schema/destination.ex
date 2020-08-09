@@ -3,6 +3,8 @@ defmodule NewWay.Schema.Destination do
   use NewWay.Schema, search_field: :destination_id
   require NewWay.Macro.EnumType, as: EnumType
 
+  @type t :: Ecto.Schema.t
+
   EnumType.def_enum(DestinationStatus, [
     :authorized,
     :unauthorized
@@ -57,12 +59,13 @@ end
 defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Destination do
   alias NewWay.SearchResult
 
-  @spec encode(%NewWay.Schema.Destination{}) :: %SearchResult{}
+  @spec encode(NewWay.Schema.Destination.t) :: SearchResult.t
   def encode(destination) do
     %SearchResult{
       id: destination.destination_id,
       ns: :destinations,
-      data: destination
+      data: destination,
+      created_at: destination.wtime
     }
   end
 end

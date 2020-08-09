@@ -3,6 +3,8 @@ defmodule NewWay.Schema.Invoice do
   use NewWay.Schema, search_field: :invoice_id
   require NewWay.Macro.EnumType, as: EnumType
 
+  @type t :: Ecto.Schema.t
+
   EnumType.def_enum(InvoiceStatus, [
     :unpaid,
     :paid,
@@ -51,12 +53,13 @@ end
 defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Invoice do
   alias NewWay.SearchResult
 
-  @spec encode(%NewWay.Schema.Invoice{}) :: %SearchResult{}
+  @spec encode(NewWay.Schema.Invoice.t) :: SearchResult.t
   def encode(invoice) do
     %SearchResult{
       id: invoice.invoice_id,
       ns: :invoices,
-      data: invoice
+      data: invoice,
+      created_at: invoice.wtime
     }
   end
 end

@@ -3,6 +3,8 @@ defmodule NewWay.Schema.Payment do
   use NewWay.Schema, search_field: :invoice_id # Payments do not have global id's
   require NewWay.Macro.EnumType, as: EnumType
 
+  @type t :: Ecto.Schema.t
+
   EnumType.def_enum(PaymentStatus, [
     :pending,
     :processed,
@@ -125,12 +127,13 @@ end
 defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Payment do
   alias NewWay.SearchResult
 
-  @spec encode(%NewWay.Schema.Payment{}) :: %SearchResult{}
+  @spec encode(NewWay.Schema.Payment.t) :: SearchResult.t
   def encode(payment) do
     %SearchResult{
       id: payment.payment_id,
       ns: :payments,
-      data: payment
+      data: payment,
+      created_at: payment.wtime
     }
   end
 end

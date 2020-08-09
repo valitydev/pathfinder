@@ -44,6 +44,7 @@ defmodule NewWay do
     %Payment{}
 
   @type search_id :: binary
+  @type created_at :: DateTime.t
 
   @type search_result :: SearchResult.t
   @type filter :: Filter.t
@@ -71,6 +72,8 @@ defmodule NewWay do
 
   # Internal
 
+  require Ecto.Query
+
   @spec get_children_of(schema_type, [namespace], filter) ::
     [schema_type]
   defp get_children_of(parent_schema, child_namespaces, filter) do
@@ -94,13 +97,17 @@ defmodule NewWay do
   @spec query_assoc_namespace(schema_type, namespace, filter) ::
     [schema_type]
   defp query_assoc_namespace(schema, namespace, filter) do
-    require Ecto.Query
     Ecto.assoc(schema, namespace)
-    |> Ecto.Query.order_by(desc: :id)
+    |> maybe_filter_current(filter.is_current)
     |> Ecto.Query.limit(^filter.limit)
     |> Ecto.Query.offset(^filter.offset)
     |> NewWay.Repo.all()
   end
+
+  defp maybe_filter_current(query, :ignore),
+    do: query
+  defp maybe_filter_current(query, is_current),
+    do: Ecto.Query.where(query, [a], a.current == ^is_current)
 
   defp do_search(namespace, ids, filter),
     do: get_schema_module(namespace).search(ids, filter)

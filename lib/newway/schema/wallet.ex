@@ -2,6 +2,8 @@ defmodule NewWay.Schema.Wallet do
   use Ecto.Schema
   use NewWay.Schema, search_field: :wallet_id
 
+  @type t :: Ecto.Schema.t
+
   @schema_prefix "nw"
   schema "wallet" do
     field(:event_id,             :integer)
@@ -34,12 +36,13 @@ end
 defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Wallet do
   alias NewWay.SearchResult
 
-  @spec encode(%NewWay.Schema.Wallet{}) :: %SearchResult{}
+  @spec encode(NewWay.Schema.Wallet.t) :: SearchResult.t
   def encode(wallet) do
     %SearchResult{
       id: wallet.wallet_id,
       ns: :wallets,
-      data: wallet
+      data: wallet,
+      created_at: wallet.wtime
     }
   end
 end

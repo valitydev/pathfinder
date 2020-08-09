@@ -1,8 +1,9 @@
 defmodule NewWay.Schema.Shop do
   use Ecto.Schema
   use NewWay.Schema, search_field: :shop_id
-
   require NewWay.Macro.EnumType, as: EnumType
+
+  @type t :: Ecto.Schema.t
 
   EnumType.def_enum(ShopBlocking, [
     :unblocked,
@@ -64,12 +65,13 @@ end
 defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Shop do
   alias NewWay.SearchResult
 
-  @spec encode(%NewWay.Schema.Shop{}) :: %SearchResult{}
+  @spec encode(NewWay.Schema.Shop.t) :: SearchResult.t
   def encode(shop) do
     %SearchResult{
       id: shop.shop_id,
       ns: :shops,
-      data: shop
+      data: shop,
+      created_at: shop.wtime
     }
   end
 end

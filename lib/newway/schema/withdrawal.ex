@@ -3,6 +3,8 @@ defmodule NewWay.Schema.Withdrawal do
   use NewWay.Schema, search_field: :withdrawal_id
   require NewWay.Macro.EnumType, as: EnumType
 
+  @type t :: Ecto.Schema.t
+
   EnumType.def_enum(WithdrawalStatus, [
     :pending,
     :succeeded,
@@ -49,12 +51,13 @@ end
 defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Withdrawal do
   alias NewWay.SearchResult
 
-  @spec encode(%NewWay.Schema.Withdrawal{}) :: %SearchResult{}
+  @spec encode(NewWay.Schema.Withdrawal.t) :: SearchResult.t
   def encode(withdrawal) do
     %SearchResult{
       id: withdrawal.withdrawal_id,
       ns: :withdrawals,
-      data: withdrawal
+      data: withdrawal,
+      created_at: withdrawal.wtime
     }
   end
 end

@@ -3,6 +3,8 @@ defmodule NewWay.Schema.Adjustment do
   use NewWay.Schema, search_field: :invoice_id # Adjustments do not have global id's
   require NewWay.Macro.EnumType, as: EnumType
 
+  @type t :: Ecto.Schema.t
+
   EnumType.def_enum(AdjustmentStatus, [
     :pending,
     :captured,
@@ -43,12 +45,13 @@ end
 defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Adjustment do
   alias NewWay.SearchResult
 
-  @spec encode(%NewWay.Schema.Adjustment{}) :: %SearchResult{}
+  @spec encode(NewWay.Schema.Adjustment.t) :: SearchResult.t
   def encode(adjustment) do
     %SearchResult{
       id: adjustment.adjustment_id,
       ns: :adjustments,
-      data: adjustment
+      data: adjustment,
+      created_at: adjustment.wtime
     }
   end
 end

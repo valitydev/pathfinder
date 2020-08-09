@@ -2593,3 +2593,17 @@ alter table nw.provider alter column terminal_json drop not null;
 -- V65__add_payer_cardholder_name.sql --
 
 alter table nw.payment add column payer_bank_card_cardholder_name character varying;
+
+-- V66__unied_provider-n-ext-term.sql --
+
+ALTER TABLE nw.provider ADD identity CHARACTER VARYING;
+ALTER TABLE nw.provider ADD wallet_terms_json CHARACTER VARYING;
+ALTER TABLE nw.provider ADD params_schema_json CHARACTER VARYING;
+
+ALTER TABLE nw.terminal ADD external_terminal_id CHARACTER VARYING;
+ALTER TABLE nw.terminal ADD external_merchant_id CHARACTER VARYING;
+ALTER TABLE nw.terminal ADD mcc CHARACTER VARYING;
+
+-- V67__add_terminal_provider_ref.sql --
+
+ALTER TABLE nw.terminal ADD terminal_provider_ref_id INT;
