@@ -22,9 +22,12 @@ defmodule PathfinderTest do
     lookup_request = pf_LookupParameters(ids: [
       "test_adjustment_id_1",
       "test_destination_id_1",
+      "test_identity_id_1",
       "test_invoice_id_1",
+      "test_party_id_1",
       "test_payment_id_1",
       "test_payout_id_1",
+      "test_shop_id_1",
       "test_refund_id_1",
       "test_wallet_id_1",
       "test_withdrawal_id_1"
@@ -33,8 +36,54 @@ defmodule PathfinderTest do
 
     {:ok, [
       pf_Result(ns: :destinations, data: %{"id" => "1"}),
+      pf_Result(ns: :identities, data: %{"id" => "1"}),
       pf_Result(ns: :invoices, data: %{"id" => "1"}),
+      pf_Result(ns: :parties, data: %{"id" => "1"}),
       pf_Result(ns: :payouts, data: %{"id" => "1"}),
+      pf_Result(ns: :shops, data: %{"id" => "1"}),
+      pf_Result(ns: :wallets, data: %{"id" => "1"}),
+      pf_Result(ns: :withdrawals, data: %{"id" => "1"})
+    ]} = Client.lookup([lookup_request, filter], ctx[:client])
+  end
+
+  test "Lookup explicit namespaces", ctx do
+    lookup_request = pf_LookupParameters(
+      ids: [
+        "test_adjustment_id_1",
+        "test_destination_id_1",
+        "test_identity_id_1",
+        "test_invoice_id_1",
+        "test_party_id_1",
+        "test_payment_id_1",
+        "test_payout_id_1",
+        "test_shop_id_1",
+        "test_refund_id_1",
+        "test_wallet_id_1",
+        "test_withdrawal_id_1"
+      ],
+      namespaces: [
+        :adjustments,
+        :destinations,
+        :identities,
+        :invoices,
+        :parties,
+        :payments,
+        :payouts,
+        :shops,
+        :refunds,
+        :wallets,
+        :withdrawals
+      ]
+    )
+    filter = pf_Filter()
+
+    {:ok, [
+      pf_Result(ns: :destinations, data: %{"id" => "1"}),
+      pf_Result(ns: :identities, data: %{"id" => "1"}),
+      pf_Result(ns: :invoices, data: %{"id" => "1"}),
+      pf_Result(ns: :parties, data: %{"id" => "1"}),
+      pf_Result(ns: :payouts, data: %{"id" => "1"}),
+      pf_Result(ns: :shops, data: %{"id" => "1"}),
       pf_Result(ns: :wallets, data: %{"id" => "1"}),
       pf_Result(ns: :withdrawals, data: %{"id" => "1"})
     ]} = Client.lookup([lookup_request, filter], ctx[:client])

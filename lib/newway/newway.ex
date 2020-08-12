@@ -43,22 +43,23 @@ defmodule NewWay do
     %Refund{} |
     %Payment{}
 
-  @type search_id :: binary
-  @type created_at :: DateTime.t
+  @type id :: integer
+  @type entity_id :: binary
+  @type timestamp :: DateTime.t
 
   @type search_result :: SearchResult.t
   @type filter :: Filter.t
 
   # API
 
-  @spec search(namespace, [search_id], filter) ::
+  @spec search(namespace, [entity_id], filter) ::
     [search_result]
   def search(namespace, ids, filter) do
     do_search(namespace, ids, filter)
     |> to_search_results()
   end
 
-  @spec search_assoc(namespace, search_id, [namespace], filter) ::
+  @spec search_assoc(namespace, entity_id, [namespace], filter) ::
     {:ok, [search_result]} | {:error, :parent_not_found}
   def search_assoc(namespace, id, child_namespaces, filter) do
     case do_search(namespace, [id], %Filter{is_current: true}) do

@@ -54,10 +54,12 @@ defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Withdrawal do
   @spec encode(NewWay.Schema.Withdrawal.t) :: SearchResult.t
   def encode(withdrawal) do
     %SearchResult{
-      id: withdrawal.withdrawal_id,
+      id: withdrawal.id,
+      entity_id: withdrawal.withdrawal_id,
       ns: :withdrawals,
-      data: withdrawal,
-      created_at: withdrawal.wtime
+      wtime: withdrawal.wtime,
+      event_time: withdrawal.event_created_at,
+      data: withdrawal
     }
   end
 end

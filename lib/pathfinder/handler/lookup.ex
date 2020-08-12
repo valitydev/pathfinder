@@ -98,7 +98,7 @@ defmodule Pathfinder.Handler.Lookup do
   @spec limit_to_global_namespaces([Pathfinder.lookup_namespace]) ::
     [Pathfinder.lookup_namespace]
   defp limit_to_global_namespaces(namespaces),
-    do: Enum.drop_while(namespaces, fn ns -> not Enum.member?(@global_namespaces, ns) end)
+    do: Enum.reject(namespaces, fn ns -> not Enum.member?(@global_namespaces, ns) end)
 
   @spec define_namespaces([Pathfinder.lookup_namespace] | :undefined) ::
     [Pathfinder.lookup_namespace]

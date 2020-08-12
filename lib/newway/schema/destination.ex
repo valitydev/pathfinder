@@ -62,10 +62,12 @@ defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Destination do
   @spec encode(NewWay.Schema.Destination.t) :: SearchResult.t
   def encode(destination) do
     %SearchResult{
-      id: destination.destination_id,
+      id: destination.id,
+      entity_id: destination.destination_id,
       ns: :destinations,
-      data: destination,
-      created_at: destination.wtime
+      wtime: destination.wtime,
+      event_time: destination.event_created_at,
+      data: destination
     }
   end
 end

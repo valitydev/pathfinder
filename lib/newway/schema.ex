@@ -14,13 +14,13 @@ defmodule NewWay.Schema do
       MySchema.search([NewWay.lookup_id]) :: [%MySchema{}]
   """
 
-  @callback search([NewWay.search_id], NewWay.filter) :: [struct]
+  @callback search([NewWay.entity_id], NewWay.filter) :: [struct]
 
   defmacro __using__(opts) do
     quote do
       @behaviour NewWay.Schema
 
-      @spec search([NewWay.search_id], NewWay.filter) :: [%__MODULE__{}]
+      @spec search([NewWay.entity_id], NewWay.filter) :: [%__MODULE__{}]
       def search(ids, filter) do
         alias NewWay.Filter
         require Ecto.Query

@@ -11,15 +11,18 @@ defmodule Pathfinder.Thrift.Codec do
   @spec encode(%NewWay.SearchResult{}) :: thrift_result
   def encode(%NewWay.SearchResult{
     id: id,
+    entity_id: entity_id,
     ns: ns,
-    data: data,
-    created_at: created_at
-  }) do
+    wtime: wtime,
+    data: data
+  } = search_result) do
     pf_Result(
       id: id,
+      entity_id: entity_id,
       ns: ns,
-      data: encode_nw_schema(data),
-      created_at: DateTime.to_iso8601(created_at)
+      wtime: DateTime.to_iso8601(wtime),
+      event_time: maybe_marshal(maybe_get(search_result, :event_time)),
+      data: encode_nw_schema(data)
     )
   end
 
@@ -37,6 +40,14 @@ defmodule Pathfinder.Thrift.Codec do
   end
 
   # Utilities
+
+  defp maybe_marshal(%DateTime{} = dt),
+    do: DateTime.to_iso8601(dt)
+  defp maybe_marshal(:undefined),
+    do: :undefined
+
+  defp maybe_get(struct, key),
+    do: Map.get(struct, key, :undefined)
 
   defp maybe_put(struct, _key, :undefined),
     do: struct

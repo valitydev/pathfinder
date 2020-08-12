@@ -1,12 +1,14 @@
 defmodule NewWay.SearchResult do
-  @enforce_keys [:id, :ns, :data, :created_at]
+  @enforce_keys [:id, :entity_id, :ns, :data, :wtime]
 
   @type t :: %__MODULE__{
-    id: NewWay.search_id,
+    id: NewWay.id,
+    entity_id: NewWay.entity_id,
     ns: NewWay.namespace,
-    data: NewWay.schema_type,
-    created_at: NewWay.created_at
+    wtime: NewWay.timestamp,
+    event_time: NewWay.timestamp,
+    data: NewWay.schema_type
   }
 
-  defstruct [:id, :ns, :data, :created_at]
+  defstruct [:id, :entity_id, :ns, :data, :wtime, :event_time]
 end

@@ -39,10 +39,12 @@ defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Wallet do
   @spec encode(NewWay.Schema.Wallet.t) :: SearchResult.t
   def encode(wallet) do
     %SearchResult{
-      id: wallet.wallet_id,
+      id: wallet.id,
+      entity_id: wallet.wallet_id,
       ns: :wallets,
-      data: wallet,
-      created_at: wallet.wtime
+      wtime: wallet.wtime,
+      event_time: wallet.event_created_at,
+      data: wallet
     }
   end
 end

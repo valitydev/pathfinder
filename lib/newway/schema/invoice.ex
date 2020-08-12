@@ -56,10 +56,12 @@ defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Invoice do
   @spec encode(NewWay.Schema.Invoice.t) :: SearchResult.t
   def encode(invoice) do
     %SearchResult{
-      id: invoice.invoice_id,
+      id: invoice.id,
+      entity_id: invoice.invoice_id,
       ns: :invoices,
-      data: invoice,
-      created_at: invoice.wtime
+      wtime: invoice.wtime,
+      event_time: invoice.event_created_at,
+      data: invoice
     }
   end
 end

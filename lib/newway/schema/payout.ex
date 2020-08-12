@@ -112,10 +112,12 @@ defimpl NewWay.Protocol.SearchResult, for: NewWay.Schema.Payout do
   @spec encode(NewWay.Schema.Payout.t) :: SearchResult.t
   def encode(payout) do
     %SearchResult{
-      id: payout.payout_id,
+      id: payout.id,
+      entity_id: payout.payout_id,
       ns: :payouts,
-      data: payout,
-      created_at: payout.wtime
+      wtime: payout.wtime,
+      event_time: payout.event_created_at,
+      data: payout
     }
   end
 end
