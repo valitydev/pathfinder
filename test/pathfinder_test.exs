@@ -212,12 +212,12 @@ defmodule PathfinderTest do
 
     filter0 = pf_Filter(limit: 1)
     {:ok, [
-      pf_Result(ns: :invoices, data: %{"id" => "1"}),
+      pf_Result(ns: :invoices, data: %{"id" => "2"}),
     ]} = Client.lookup([lookup_request, filter0], ctx[:client])
 
     filter1 = pf_Filter(limit: 1, offset: 1)
     {:ok, [
-      pf_Result(ns: :invoices, data: %{"id" => "2"}),
+      pf_Result(ns: :invoices, data: %{"id" => "1"}),
     ]} = Client.lookup([lookup_request, filter1], ctx[:client])
 
     filter2 = pf_Filter(is_current: false)
