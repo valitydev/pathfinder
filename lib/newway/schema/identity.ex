@@ -6,7 +6,6 @@ defmodule NewWay.Schema.Identity do
 
   @schema_prefix "nw"
   schema "identity" do
-    field(:event_id,                              :integer)
     field(:event_created_at,                      :utc_datetime)
     field(:event_occured_at,                      :utc_datetime)
     field(:sequence_id,                           :integer)

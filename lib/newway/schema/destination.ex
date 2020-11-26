@@ -17,7 +17,6 @@ defmodule NewWay.Schema.Destination do
 
   @schema_prefix "nw"
   schema "destination" do
-    field(:event_id,                          :integer)
     field(:event_created_at,                  :utc_datetime)
     field(:event_occured_at,                  :utc_datetime)
     field(:sequence_id,                       :integer)

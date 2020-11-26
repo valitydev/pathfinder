@@ -5,7 +5,6 @@ defmodule NewWay.Repo.Migrations.Identities do
     execute """
       INSERT INTO nw.identity VALUES (
         1,
-        1,
         '2004-10-19 10:23:54',
         '2004-10-19 10:23:54',
         1,
@@ -26,7 +25,6 @@ defmodule NewWay.Repo.Migrations.Identities do
     execute """
       INSERT INTO nw.identity VALUES (
         2,
-        2,
         '2004-10-19 10:23:54',
         '2004-10-19 10:23:54',
         2,
@@ -46,7 +44,6 @@ defmodule NewWay.Repo.Migrations.Identities do
     """
     execute """
       INSERT INTO nw.identity VALUES (
-        3,
         3,
         '2004-10-19 10:23:54',
         '2004-10-19 10:23:54',

@@ -2607,3 +2607,78 @@ ALTER TABLE nw.terminal ADD mcc CHARACTER VARYING;
 -- V67__add_terminal_provider_ref.sql --
 
 ALTER TABLE nw.terminal ADD terminal_provider_ref_id INT;
+
+-- V68__remove_not_null_contraint_terminal.sql --
+
+ALTER TABLE nw.terminal ALTER COLUMN risk_coverage DROP NOT NULL;
+
+-- V69__add_charged_back_payment_status.sql --
+
+ALTER TYPE nw.payment_status ADD VALUE 'charged_back';
+
+-- V71__add_payment_routing_rules_table.sql --
+
+CREATE TABLE nw.payment_routing_rule (
+  id                       BIGSERIAL           NOT NULL,
+  rule_id                  INTEGER             NOT NULL,
+  name                     CHARACTER VARYING   NOT NULL,
+  description              CHARACTER VARYING,
+  routing_decisions_jsonb  JSONB               NOT NULL,
+  wtime                    TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() at time zone 'utc'),
+  current                  BOOLEAN NOT NULL DEFAULT TRUE,
+  CONSTRAINT payment_routing_rule_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX payment_routing_rule_ref_id on nw.payment_routing_rule(rule_id);
+-- V72__change_type_for_routing_decisions_column.sql --
+
+alter table nw.payment_routing_rule drop column routing_decisions_jsonb;
+alter table nw.payment_routing_rule add column routing_decisions_json character varying not null;
+
+-- V73__rename_rule_id_and_add_version_column.sql --
+
+alter table nw.payment_routing_rule add column version_id bigint not null;
+alter table nw.payment_routing_rule rename column rule_id to rule_ref_id;
+
+-- V74__change_fileds_for_new_seq_scheme.sql --
+
+drop index deposit_event_id_idx;
+ALTER TABLE nw.deposit DROP COLUMN event_id;
+ALTER TABLE nw.deposit ADD CONSTRAINT deposit_uniq UNIQUE(deposit_id, sequence_id);
+
+drop INDEX destination_event_id_idx;
+ALTER TABLE nw.destination DROP COLUMN event_id;
+ALTER TABLE nw.destination ADD CONSTRAINT destination_uniq UNIQUE(destination_id, sequence_id);
+
+drop INDEX identity_event_id_idx;
+ALTER TABLE nw.identity DROP COLUMN event_id;
+ALTER TABLE nw.identity ADD CONSTRAINT identity_uniq UNIQUE(identity_id, sequence_id);
+
+drop INDEX challenge_event_id_idx;
+ALTER TABLE nw.challenge DROP COLUMN event_id;
+ALTER TABLE nw.challenge ADD CONSTRAINT challenge_uniq UNIQUE(challenge_id, identity_id, sequence_id);
+
+drop INDEX source_event_id_idx;
+ALTER TABLE nw.source DROP COLUMN event_id;
+ALTER TABLE nw.source ADD CONSTRAINT source_uniq UNIQUE(source_id, sequence_id);
+
+drop INDEX wallet_event_id_idx;
+ALTER TABLE nw.wallet DROP COLUMN event_id;
+ALTER TABLE nw.wallet ADD CONSTRAINT wallet_uniq UNIQUE(wallet_id, sequence_id);
+
+drop INDEX withdrawal_event_id_idx;
+ALTER TABLE nw.withdrawal DROP COLUMN event_id;
+ALTER TABLE nw.withdrawal ADD CONSTRAINT withdrawal_uniq UNIQUE(withdrawal_id, sequence_id);
+
+drop INDEX withdrawal_session_event_id_idx;
+ALTER TABLE nw.withdrawal_session DROP COLUMN event_id;
+ALTER TABLE nw.withdrawal_session ADD CONSTRAINT withdrawal_session_uniq UNIQUE(withdrawal_session_id, sequence_id);
+
+ALTER TABLE nw.payout ADD COLUMN change_id INT not null;
+ALTER TABLE nw.payout ADD CONSTRAINT payout_uniq UNIQUE(event_id, payout_id, change_id);
+
+-- V75__add_new_payment_systems.sql --
+
+alter type nw.BANK_CARD_PAYMENT_SYSTEM add value 'elo';
+alter type nw.BANK_CARD_PAYMENT_SYSTEM add value 'rupay';
+alter type nw.BANK_CARD_PAYMENT_SYSTEM add value 'ebt';

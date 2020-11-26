@@ -6,6 +6,7 @@ defmodule NewWay.Repo.Migrations.PayoutRawTestData do
       INSERT INTO nw.payout (
         id,
         event_id,
+        change_id,
         event_created_at,
         payout_id,
         party_id,
@@ -17,6 +18,7 @@ defmodule NewWay.Repo.Migrations.PayoutRawTestData do
         wtime,
         current
       ) VALUES (
+        1,
         1,
         1,
         '2004-10-19 10:23:54',
@@ -35,6 +37,7 @@ defmodule NewWay.Repo.Migrations.PayoutRawTestData do
       INSERT INTO nw.payout (
         id,
         event_id,
+        change_id,
         event_created_at,
         payout_id,
         party_id,
@@ -46,6 +49,7 @@ defmodule NewWay.Repo.Migrations.PayoutRawTestData do
         wtime,
         current
       ) VALUES (
+        2,
         2,
         2,
         '2004-10-19 11:23:54',
@@ -64,6 +68,7 @@ defmodule NewWay.Repo.Migrations.PayoutRawTestData do
       INSERT INTO nw.payout (
         id,
         event_id,
+        change_id,
         event_created_at,
         payout_id,
         party_id,
@@ -75,6 +80,7 @@ defmodule NewWay.Repo.Migrations.PayoutRawTestData do
         wtime,
         current
       ) VALUES (
+        3,
         3,
         3,
         '2004-10-19 12:23:54',

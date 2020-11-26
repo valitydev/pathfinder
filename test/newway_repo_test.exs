@@ -37,7 +37,6 @@ defmodule NewwayRepoTest do
     expected_entries = [
       %NewWay.Schema.Destination{
         id: 1,
-        event_id: 1,
         event_created_at: ~U[2004-10-19 10:23:54Z],
         event_occured_at: ~U[2004-10-19 10:23:54Z],
         sequence_id: 1,
@@ -147,7 +146,8 @@ defmodule NewwayRepoTest do
         status: :paid,
         type: :bank_account,
         wtime: ~U[2004-10-19 10:23:54Z],
-        current: true
+        current: true,
+        change_id: 1
       }
     ]
 
@@ -196,7 +196,6 @@ defmodule NewwayRepoTest do
     expected_entries = [
       %NewWay.Schema.Wallet{
         id: 1,
-        event_id: 1,
         event_created_at: ~U[2004-10-19 10:23:54Z],
         event_occured_at: ~U[2004-10-19 10:23:54Z],
         sequence_id: 1,
@@ -222,7 +221,6 @@ defmodule NewwayRepoTest do
     expected_entries = [
       %NewWay.Schema.Withdrawal{
         id: 1,
-        event_id: 1,
         event_created_at: ~U[2004-10-19 10:23:54Z],
         event_occured_at: ~U[2004-10-19 10:23:54Z],
         sequence_id: 1,

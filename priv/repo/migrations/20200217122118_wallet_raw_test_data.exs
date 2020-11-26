@@ -5,7 +5,6 @@ defmodule NewWay.Repo.Migrations.WalletRawTestData do
     execute """
       INSERT INTO nw.wallet VALUES (
         1,
-        1,
         '2004-10-19 10:23:54',
         '2004-10-19 10:23:54',
         1,
@@ -24,7 +23,6 @@ defmodule NewWay.Repo.Migrations.WalletRawTestData do
     execute """
       INSERT INTO nw.wallet VALUES (
         2,
-        2,
         '2004-10-19 11:23:54',
         '2004-10-19 11:23:54',
         2,
@@ -42,7 +40,6 @@ defmodule NewWay.Repo.Migrations.WalletRawTestData do
     """
     execute """
       INSERT INTO nw.wallet VALUES (
-        3,
         3,
         '2004-10-19 12:23:54',
         '2004-10-19 12:23:54',

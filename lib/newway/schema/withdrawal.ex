@@ -20,7 +20,6 @@ defmodule NewWay.Schema.Withdrawal do
 
   @schema_prefix "nw"
   schema "withdrawal" do
-    field(:event_id,                              :integer)
     field(:event_created_at,                      :utc_datetime)
     field(:event_occured_at,                      :utc_datetime)
     field(:sequence_id,                           :integer)

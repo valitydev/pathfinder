@@ -96,6 +96,7 @@ defmodule NewWay.Schema.Payout do
     field(:fee,                                                        :integer)
     field(:currency_code,                                              :string)
     field(:wallet_id,                                                  :string)
+    field(:change_id,                                                  :integer)
 
     belongs_to :party, NewWay.Schema.Party,
       define_field: false
