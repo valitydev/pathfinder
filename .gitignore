@@ -28,3 +28,9 @@ docker-compose.yml
 .elixir_ls
 
 .mix
+
+# Ignore generated Dockerfile
+Dockerfile
+
+# Ignore logs
+console.json

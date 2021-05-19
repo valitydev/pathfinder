@@ -5,7 +5,7 @@ defmodule Pathfinder.MixProject do
     [
       app: :pathfinder,
       version: "0.1.0",
-      elixir: "~> 1.10",
+      elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       releases: releases()
@@ -21,7 +21,7 @@ defmodule Pathfinder.MixProject do
 
   defp deps do
     [
-      {:ecto_sql, "~> 3.0"},
+      {:ecto_sql, "~> 3.6"},
       {:postgrex, ">= 0.0.0"},
       # Erlang libs
       {:woody, git: "https://github.com/rbkmoney/woody_erlang.git", branch: :master},
@@ -30,7 +30,7 @@ defmodule Pathfinder.MixProject do
       {:logger_logstash_formatter, git: "https://github.com/rbkmoney/logger_logstash_formatter.git", branch: :master},
       {:pathfinder_proto, git: "https://github.com/rbkmoney/pathfinder_proto.git", branch: :master},
       # Only dev
-      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.1.0", only: [:dev], runtime: false}
     ]
   end
 
@@ -42,7 +42,7 @@ defmodule Pathfinder.MixProject do
           pathfinder: :permanent
         ],
         include_executables_for: [:unix],
-        include_erts: true
+        include_erts: false
       ]
     ]
   end
