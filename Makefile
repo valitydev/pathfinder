@@ -1,5 +1,5 @@
 MIX := MIX_HOME=$(shell pwd)/.mix $(shell which mix 2>/dev/null || which ./mix)
-SUBMODULES = build_utils
+SUBMODULES = build_utils var/newway
 SUBTARGETS = $(patsubst %,%/.git,$(SUBMODULES))
 
 UTILS_PATH := build_utils

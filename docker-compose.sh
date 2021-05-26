@@ -24,7 +24,8 @@ services:
       POSTGRES_DB: nw
       POSTGRES_USER: nw
     volumes:
-      - ./var/test/newway.init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./var/init_mock_newway.sh:/docker-entrypoint-initdb.d/init_mock_newway.sh
+      - ./var/newway:/var/newway:ro
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 1s
