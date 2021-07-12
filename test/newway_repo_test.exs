@@ -136,18 +136,20 @@ defmodule NewwayRepoTest do
     expected_entries = [
       %NewWay.Schema.Payout{
         id: 1,
-        event_id: 1,
-        event_created_at: ~U[2004-10-19 10:23:54Z],
         payout_id: "test_payout_id_1",
+        event_created_at: ~U[2004-10-19 10:23:54Z],
+        sequence_id: 1,
+        created_at: ~U[2004-10-19 10:23:54Z],
         party_id: "test_party_id_1",
         shop_id: "test_shop_id_1",
-        contract_id: "test_contract_id_1",
-        created_at: ~U[2004-10-19 10:23:54Z],
         status: :paid,
-        type: :bank_account,
+        payout_tool_id: "test_payout_tool_id_1",
+        amount: 1000,
+        fee: 1000,
+        currency_code: "KAZ",
+        cancelled_details: "test_cancelled_details_1",
         wtime: ~U[2004-10-19 10:23:54Z],
-        current: true,
-        change_id: 1
+        current: true
       }
     ]
 

@@ -25,8 +25,6 @@ defmodule NewWay.Schema.Wallet do
     belongs_to :identity, NewWay.Schema.Identity,
       define_field: false
 
-    has_many :payouts, NewWay.Schema.Payout,
-      foreign_key: :wallet_id, references: :wallet_id
     has_many :withdrawals, NewWay.Schema.Withdrawal,
       foreign_key: :wallet_id, references: :wallet_id
   end
