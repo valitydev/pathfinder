@@ -43,7 +43,7 @@ defmodule PathfinderTest do
       pf_Result(ns: :shops, data: %{"id" => "1"}),
       pf_Result(ns: :wallets, data: %{"id" => "1"}),
       pf_Result(ns: :withdrawals, data: %{"id" => "1"})
-    ]} = Client.lookup([lookup_request, filter], ctx[:client])
+    ]} = Client.lookup({lookup_request, filter}, ctx[:client])
   end
 
   test "Lookup explicit namespaces", ctx do
@@ -86,7 +86,7 @@ defmodule PathfinderTest do
       pf_Result(ns: :shops, data: %{"id" => "1"}),
       pf_Result(ns: :wallets, data: %{"id" => "1"}),
       pf_Result(ns: :withdrawals, data: %{"id" => "1"})
-    ]} = Client.lookup([lookup_request, filter], ctx[:client])
+    ]} = Client.lookup({lookup_request, filter}, ctx[:client])
   end
 
   test "Lookup ambiguous id", ctx do
@@ -102,7 +102,7 @@ defmodule PathfinderTest do
       pf_Result(ns: :shops, data: %{"id" => "3"}),
       pf_Result(ns: :wallets, data: %{"id" => "3"}),
       pf_Result(ns: :withdrawals, data: %{"id" => "3"})
-    ]} = Client.lookup([lookup_request, filter], ctx[:client])
+    ]} = Client.lookup({lookup_request, filter}, ctx[:client])
   end
 
   test "Lookup base namespace limit", ctx do
@@ -129,7 +129,7 @@ defmodule PathfinderTest do
       pf_Result(ns: :destinations, data: %{"id" => "2"}),
       pf_Result(ns: :payouts, data: %{"id" => "2"}),
       pf_Result(ns: :wallets, data: %{"id" => "2"})
-    ]} = Client.lookup([lookup_request, filter], ctx[:client])
+    ]} = Client.lookup({lookup_request, filter}, ctx[:client])
   end
 
   test "Lookup ambiguous id namespace limit", ctx do
@@ -147,7 +147,7 @@ defmodule PathfinderTest do
       pf_Result(ns: :payouts, data: %{"id" => "3"}),
       pf_Result(ns: :withdrawals, data: %{"id" => "3"}),
       pf_Result(ns: :wallets, data: %{"id" => "3"})
-    ]} = Client.lookup([lookup_request, filter], ctx[:client])
+    ]} = Client.lookup({lookup_request, filter}, ctx[:client])
   end
 
   test "SearchRelated base", ctx do
@@ -161,7 +161,7 @@ defmodule PathfinderTest do
       pf_Result(ns: :adjustments, data: %{"id" => "1"}),
       pf_Result(ns: :payments, data: %{"id" => "1"}),
       pf_Result(ns: :refunds, data: %{"id" => "1"})
-    ]} = Client.search_related([relation_params, filter], ctx[:client])
+    ]} = Client.search_related({relation_params, filter}, ctx[:client])
   end
 
   test "SearchRelated children namespace limit", ctx do
@@ -174,7 +174,7 @@ defmodule PathfinderTest do
 
     {:ok, [
       pf_Result(ns: :payments, data: %{"id" => "1"}),
-    ]} = Client.search_related([relation_params0, filter], ctx[:client])
+    ]} = Client.search_related({relation_params0, filter}, ctx[:client])
 
     relation_params1 = pf_RelationParameters(
       parent_namespace: :parties,
@@ -184,7 +184,7 @@ defmodule PathfinderTest do
 
     {:ok, [
       pf_Result(ns: :invoices, data: %{"id" => "1"}),
-    ]} = Client.search_related([relation_params1, filter], ctx[:client])
+    ]} = Client.search_related({relation_params1, filter}, ctx[:client])
   end
 
   test "SearchRelated no parent exists", ctx do
@@ -196,7 +196,7 @@ defmodule PathfinderTest do
 
     {:exception,
       pf_InvalidArguments(reason: "Parent does not exist")
-    } = Client.search_related([relation_params, filter], ctx[:client])
+    } = Client.search_related({relation_params, filter}, ctx[:client])
   end
 
   test "Limit test", ctx do
@@ -213,15 +213,15 @@ defmodule PathfinderTest do
     filter0 = pf_Filter(limit: 1)
     {:ok, [
       pf_Result(ns: :invoices, data: %{"id" => "2"}),
-    ]} = Client.lookup([lookup_request, filter0], ctx[:client])
+    ]} = Client.lookup({lookup_request, filter0}, ctx[:client])
 
     filter1 = pf_Filter(limit: 1, offset: 1)
     {:ok, [
       pf_Result(ns: :invoices, data: %{"id" => "1"}),
-    ]} = Client.lookup([lookup_request, filter1], ctx[:client])
+    ]} = Client.lookup({lookup_request, filter1}, ctx[:client])
 
     filter2 = pf_Filter(is_current: false)
-    {:ok, []} = Client.lookup([lookup_request, filter2], ctx[:client])
+    {:ok, []} = Client.lookup({lookup_request, filter2}, ctx[:client])
 
     relation_params0 = pf_RelationParameters(
       parent_namespace: :invoices,
@@ -229,6 +229,6 @@ defmodule PathfinderTest do
       child_namespaces: [:payments]
     )
 
-    {:ok, []} = Client.search_related([relation_params0, filter2], ctx[:client])
+    {:ok, []} = Client.search_related({relation_params0, filter2}, ctx[:client])
   end
 end

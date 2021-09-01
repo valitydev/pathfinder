@@ -38,9 +38,9 @@ defmodule Pathfinder.Handler.Lookup do
 
   @spec handle_function_(:woody.func, :woody.args, :woody_context.ctx, :woody.options) ::
     {:ok, :woody.result} | no_return
-  defp handle_function_(:Lookup, [lookup_parameters, filter], _context, _opts),
+  defp handle_function_(:Lookup, {lookup_parameters, filter}, _context, _opts),
     do: handle_lookup(lookup_parameters, from_thrift(filter))
-  defp handle_function_(:SearchRelated, [relation_parameters, filter], _context, _opts),
+  defp handle_function_(:SearchRelated, {relation_parameters, filter}, _context, _opts),
     do: handle_search_related(relation_parameters, from_thrift(filter))
 
   ## Handler functions
